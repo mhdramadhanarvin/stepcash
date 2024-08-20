@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -48,5 +49,22 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')
+            ->scopes([
+                'https://www.googleapis.com/auth/fitness.activity.read',
+                'https://www.googleapis.com/auth/fitness.location.read'
+            ])
+            ->with(["access_type" => "offline"])
+            ->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        $userAuth = Socialite::driver('google')->user();
+        dd($userAuth);
     }
 }

@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'google_credentials_path' => env('GOOGLE_CREDENTIALS_PATH')
 ];

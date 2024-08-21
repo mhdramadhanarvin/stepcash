@@ -11,8 +11,8 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('google_id', 255)->nullable();
-            $table->double('coin')->default(0);
+            $table->string('google_id', 255)->nullable()->after('remember_token');
+            $table->double('coin')->default(0)->after('google_id');
         });
     }
 

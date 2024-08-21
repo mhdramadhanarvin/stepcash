@@ -4,9 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Repositories\StepActivityRepositoryInterface;
+use App\Repositories\UserRepositoryInterface;
+use App\Repositories\TokenRepositoryInterface;
+use App\Services\GoogleApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,6 +20,22 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected $userRepository;
+    protected $tokenRepository;
+    protected $stepActivityRepository;
+    protected $googleApiService;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        TokenRepositoryInterface $tokenRepository,
+        GoogleApiService $googleApiService,
+        StepActivityRepositoryInterface $stepActivityRepository,
+    ) {
+        $this->userRepository = $userRepository;
+        $this->tokenRepository = $tokenRepository;
+        $this->stepActivityRepository = $stepActivityRepository;
+        $this->googleApiService = $googleApiService;
+    }
     /**
      * Display the login view.
      */
@@ -64,7 +86,63 @@ class AuthenticatedSessionController extends Controller
 
     public function handleGoogleCallback()
     {
-        $userAuth = Socialite::driver('google')->user();
-        dd($userAuth);
+        try {
+            DB::beginTransaction();
+
+            $userAuth = Socialite::driver('google')->user();
+
+            $findUser = $this->userRepository->getByGoogleId($userAuth->id);
+
+            $api = $this->googleApiService;
+            $api->setAccessToken($userAuth->token);
+            $api->setRefreshToken($userAuth->refreshToken);
+            $api->setExpirationToken(now()->addSeconds($userAuth->expiresIn));
+            if (count($api->getDataSource()) == 0) {
+                throw new \Error('Silahkan install Google Fit terlebih dahulu!');
+            }
+
+            if ($findUser) {
+
+                $this->tokenRepository->update([
+                    'token' => $userAuth->token,
+                    'refresh_token' => $userAuth->refreshToken,
+                    'expired_at' => now()->addSeconds($userAuth->expiresIn),
+                ], $findUser->token->id);
+
+                Auth::login($findUser);
+                DB::commit();
+                return redirect('/dashboard');
+
+            } else {
+
+                $user = $this->userRepository->create([
+                    'name' => $userAuth->name,
+                    'email' => $userAuth->email,
+                    'password' => password_hash('', PASSWORD_BCRYPT),
+                    'google_id' => $userAuth->id,
+                ]);
+
+                $this->tokenRepository->create($user, [
+                    'token' => $userAuth->token,
+                    'refresh_token' => $userAuth->refreshToken,
+                    'expired_at' => now()->addSeconds($userAuth->expiresIn)
+                ]);
+
+                $this->stepActivityRepository->create($user, [
+                    'step' => 0,
+                    'calory' => 0,
+                    'distance' => 0,
+                    'time_spent' => 0,
+                ]);
+
+                Auth::login($user);
+                DB::commit();
+                return redirect('/dashboard');
+            }
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            DB::rollBack();
+            return redirect()->route('login')->with('status', $e->getMessage());
+        }
     }
 }

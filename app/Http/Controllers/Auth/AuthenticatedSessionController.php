@@ -109,7 +109,7 @@ class AuthenticatedSessionController extends Controller
                     'expired_at' => now()->addSeconds($userAuth->expiresIn),
                 ], $findUser->token->id);
 
-                Auth::login($findUser);
+                Auth::login($findUser, remember: true);
                 DB::commit();
                 return redirect('/dashboard');
 
@@ -135,7 +135,7 @@ class AuthenticatedSessionController extends Controller
                     'time_spent' => 0,
                 ]);
 
-                Auth::login($user);
+                Auth::login($user, remember: true);
                 DB::commit();
                 return redirect('/dashboard');
             }

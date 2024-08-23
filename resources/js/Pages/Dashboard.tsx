@@ -7,7 +7,20 @@ import {
     faLocationDot,
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
-import { CircularProgress } from "@mui/material";
+import {
+    CircularProgress,
+    createTheme,
+    Icon,
+    ThemeProvider,
+} from "@mui/material";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: "#EE7214",
+        },
+    },
+});
 
 export default function Dashboard({ auth }: PageProps) {
     return (
@@ -20,21 +33,23 @@ export default function Dashboard({ auth }: PageProps) {
                 <div className="w-40 h-40 bg-yellow-400 text-white grid justify-items-center content-center rounded-full mt-8 relative">
                     <FontAwesomeIcon
                         icon={faWalking}
-                        className="text-5xl mt-3"
+                        className="text-6xl mt-3"
                     />
                     <span className="text-2xl font-semibold">
                         {Math.round((6029 / 7000) * 100)}%
                     </span>
-                    <CircularProgress
-                        variant="determinate"
-                        value={Math.round((6029 / 7000) * 100)}
-                        size={165}
-                        thickness={1}
-                        sx={{
-                            position: "absolute",
-                            top: 0,
-                        }}
-                    ></CircularProgress>
+                    <ThemeProvider theme={theme}>
+                        <CircularProgress
+                            variant="determinate"
+                            value={5}
+                            size={165}
+                            thickness={2}
+                            sx={{
+                                position: "absolute",
+                                top: 0,
+                            }}
+                        ></CircularProgress>
+                    </ThemeProvider>
                 </div>
             </div>
             <h2 className="text-center text-3xl pt-5 font-semibold">6029</h2>

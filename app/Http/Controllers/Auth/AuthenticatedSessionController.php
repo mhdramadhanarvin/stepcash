@@ -80,7 +80,7 @@ class AuthenticatedSessionController extends Controller
                 'https://www.googleapis.com/auth/fitness.activity.read',
                 'https://www.googleapis.com/auth/fitness.location.read'
             ])
-            ->with(["access_type" => "offline"])
+            ->with(["access_type" => "offline", "prompt" => "consent select_account"])
             ->redirect();
     }
 

@@ -7,12 +7,7 @@ import {
     faLocationDot,
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-    CircularProgress,
-    createTheme,
-    Icon,
-    ThemeProvider,
-} from "@mui/material";
+import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
     palette: {
@@ -23,6 +18,8 @@ const theme = createTheme({
 });
 
 export default function Dashboard({ auth }: PageProps) {
+    const progress = 29;
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <div>
@@ -33,16 +30,14 @@ export default function Dashboard({ auth }: PageProps) {
                 <div className="w-40 h-40 bg-yellow-400 text-white grid justify-items-center content-center rounded-full mt-8 relative">
                     <FontAwesomeIcon
                         icon={faWalking}
-                        className="text-6xl mt-3"
+                        className="text-6xl mt-1"
                     />
-                    <span className="text-2xl font-semibold">
-                        {Math.round((6029 / 7000) * 100)}%
-                    </span>
+                    <span className="text-2xl font-semibold">{progress}%</span>
                     <ThemeProvider theme={theme}>
                         <CircularProgress
                             variant="determinate"
-                            value={5}
-                            size={165}
+                            value={progress}
+                            size={160}
                             thickness={2}
                             sx={{
                                 position: "absolute",

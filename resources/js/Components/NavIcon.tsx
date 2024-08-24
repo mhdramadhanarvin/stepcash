@@ -22,7 +22,7 @@ export default function NavIcon({
         <Link href={path}>
             {active ? (
                 <div className="bg-white w-10 h-10 rounded-full grid justify-items-center items-center">
-                    <FontAwesomeIcon icon={icon} className="text-indigo-800" />
+                    <FontAwesomeIcon icon={icon} className="text-commons" />
                 </div>
             ) : (
                 <FontAwesomeIcon icon={icon} />

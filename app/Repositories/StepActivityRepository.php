@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\StepActivity;
 use App\Models\User;
+use Carbon\Carbon;
 
 class StepActivityRepository implements StepActivityRepositoryInterface
 {
@@ -22,6 +23,16 @@ class StepActivityRepository implements StepActivityRepositoryInterface
 
     public function getAll()
     {
+    }
+
+    public function getInToday($user_id)
+    {
+        return $this->model->where('user_id', $user_id)->whereDate('created_at', Carbon::today())->first();
+    }
+
+    public function getAllTodayNotConvert()
+    {
+        return $this->model->where('is_convert', 0)->whereDate('created_at', Carbon::today())->get();
     }
 
     public function create(User $user, array $data)

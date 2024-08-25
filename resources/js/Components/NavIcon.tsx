@@ -14,9 +14,7 @@ export default function NavIcon({
     active,
     icon,
 }: NavIconProps): ReactElement {
-    useEffect(() => {
-        console.log(active);
-    }, [active]);
+    useEffect(() => {}, [active]);
 
     return (
         <Link href={path}>

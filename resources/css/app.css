@@ -8,6 +8,6 @@
         font-style: normal;
         font-weight: 300, 400, 500, 600, 700;
         font-display: swap;
-        src: url(/fonts/Poppins.ttf) format("ttf");
+        src: url("~fonts/Poppins.ttf") format("truetype");
     }
 }

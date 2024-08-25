@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('step');
             $table->integer('calory');
-            $table->integer('distance');
+            $table->double('distance');
             $table->integer('time_spent');
             $table->boolean('is_convert')->default(false);
             $table->timestamps();

@@ -10,6 +10,10 @@ interface StepActivityRepositoryInterface
 
     public function getAll();
 
+    public function getInToday($user_id);
+
+    public function getAllTodayNotConvert();
+
     public function create(User $user, array $data);
 
     public function update(array $data, $id);

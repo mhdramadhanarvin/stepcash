@@ -7,7 +7,6 @@ use Google\Client;
 use Google\Service\Fitness;
 use Google\Service\Fitness\BucketByTime;
 use Google\Service\Fitness\AggregateRequest;
-use Google\Service\Fitness\DataSource;
 use App\Repositories\TokenRepositoryInterface;
 
 class GoogleApiService
@@ -70,7 +69,7 @@ class GoogleApiService
             return $this->tokenRepository->update([
                 'token' => $new_token['access_token'],
                 'expired_at' => now()->addSeconds(60 * 60)
-            ], $user->id);
+            ], $user->token->id);
         }
 
         return null;

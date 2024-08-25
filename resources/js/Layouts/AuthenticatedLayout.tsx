@@ -100,7 +100,7 @@ export default function Authenticated({
                             >
                                 <CoinIcon />
                                 <span className="text-xl font-semibold">
-                                    123
+                                    {user.coin}
                                 </span>
                                 {/*
                                 <svg
@@ -187,9 +187,9 @@ export default function Authenticated({
                 </header>
             )}
 
-            <main className="p-6">{children}</main>
+            <main className="p-4">{children}</main>
 
-            <footer className="bg-commons shadow rounded-full mx-7 sticky bottom-5">
+            <footer className="bg-commons shadow rounded-full mx-7 sticky bottom-5 z-50">
                 <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 grid justify-items-center items-center grid-cols-4 gap-4 text-xl text-white">
                     <NavIcon
                         path={route("dashboard")}

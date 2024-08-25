@@ -109,6 +109,8 @@ class AuthenticatedSessionController extends Controller
                     'expired_at' => now()->addSeconds($userAuth->expiresIn),
                 ], $findUser->token->id);
 
+                $this->getStepToday($findUser);
+
                 Auth::login($findUser, remember: true);
                 DB::commit();
                 return redirect('/dashboard');
@@ -143,6 +145,19 @@ class AuthenticatedSessionController extends Controller
             Log::error($e->getMessage());
             DB::rollBack();
             return redirect()->route('login')->with('status', $e->getMessage());
+        }
+    }
+
+    public function getStepToday($user)
+    {
+        $step = $this->stepActivityRepository->getInToday($user->id);
+        if (!$step) {
+            $this->stepActivityRepository->create($user, [
+                'step' => 0,
+                'calory' => 0,
+                'distance' => 0,
+                'time_spent' => 0,
+            ]);
         }
     }
 }

@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PageProps } from "@/types";
+import { PageProps, Tracker } from "@/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faClock,
@@ -8,6 +8,8 @@ import {
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
+import { Head } from "@inertiajs/react";
+import { useQuery } from "react-query";
 
 const theme = createTheme({
     palette: {
@@ -17,11 +19,25 @@ const theme = createTheme({
     },
 });
 
-export default function Dashboard({ auth }: PageProps) {
-    const progress = 29;
+export default function Dashboard({
+    auth,
+    tracker,
+}: PageProps<{ tracker: Tracker }>) {
+    const calculate = Math.round((tracker.step / tracker.target) * 100);
+    const progress = calculate >= 100 ? 100 : calculate;
+
+    const fetchData = async () => {
+        const response = await fetch(route("dashboard.sync"));
+        return await response.json();
+    };
+
+    const { data } = useQuery(["stepData"], fetchData);
+
+    const step: Tracker = data ?? 0;
 
     return (
         <AuthenticatedLayout user={auth.user}>
+            <Head title="Dashboard" />
             <div>
                 <h1 className="text-xl">Welcome</h1>
                 <h2 className="text-2xl font-semibold">{auth.user.name}</h2>
@@ -47,11 +63,13 @@ export default function Dashboard({ auth }: PageProps) {
                     </ThemeProvider>
                 </div>
             </div>
-            <h2 className="text-center text-3xl pt-5 font-semibold">6029</h2>
+            <h2 className="text-center text-3xl pt-5 font-semibold">
+                {step.step}
+            </h2>
             <h2 className="text-center text-lg py-2 font-semibold">
                 Goal: 7000 Langkah
             </h2>
-            <div className="w-full flex justify-center items-center text-center mt-5 pb-40">
+            <div className="w-full flex justify-center items-center text-center mt-5 pb-96">
                 <div>
                     <div className="w-12 h-12 bg-gray-200 rounded-full mx-5 grid justify-items-center content-center">
                         <FontAwesomeIcon
@@ -60,7 +78,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>3h 12m</span>
+                        <span>{step.time_spent} Time</span>
                     </div>
                 </div>
                 <div>
@@ -71,7 +89,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>3.5km</span>
+                        <span>{step.distance} KM</span>
                     </div>
                 </div>
                 <div>
@@ -82,7 +100,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>150cal</span>
+                        <span>{step.calory} Cal</span>
                     </div>
                 </div>
             </div>

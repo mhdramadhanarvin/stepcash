@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Jobs\FetchGoogleFit;
 use App\Repositories\TokenRepository;
 use App\Repositories\TokenRepositoryInterface;
 use App\Repositories\UserRepository;
@@ -9,6 +10,8 @@ use App\Repositories\UserRepositoryInterface;
 use App\Repositories\StepActivityRepository;
 use App\Repositories\StepActivityRepositoryInterface;
 use App\Services\GoogleApiService;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
         /**/
         $this->app->bind(GoogleApiService::class, function ($app) {
             return new GoogleApiService($app->make(TokenRepositoryInterface::class));
+        });
+        $this->app->bindMethod([FetchGoogleFit::class, 'handle'], function (FetchGoogleFit $job, Application $app) {
+            return $job->handle($app->make(GoogleApiService::class), $app->make(StepActivityRepositoryInterface::class));
         });
     }
 

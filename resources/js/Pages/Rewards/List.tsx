@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PageProps } from "@/types";
+import { PageProps, Rewards } from "@/types";
+import { useApi } from "@/utils/useApi";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@inertiajs/react";
@@ -9,13 +10,34 @@ import CardContent from "@mui/joy/CardContent";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Typography from "@mui/joy/Typography";
 import { Box, Pagination } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function List({ auth }: PageProps) {
-    const [product, _] = useState<number[]>([1, 2, 3, 4, 5]);
+    const [page, setPage] = useState<number>(1);
+    const { data, pagination, refetch } = useApi({
+        key: "rewards",
+        route: route("rewards.get"),
+        page,
+    });
+
+    const handleChange = (e: ChangeEvent<unknown>, p: number) => {
+        setPage(p);
+    };
+
+    const limitCharacter = (character: string): string => {
+        return character.length > 20
+            ? character.slice(0, 20) + "..."
+            : character;
+    };
+
+    useEffect(() => {
+        refetch();
+    }, [page, refetch]);
+
+    const rewards: Rewards[] = data ?? [];
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="w-full">
+            <div className="w-full pb-24">
                 <div className="mb-5 grid grid-cols-7">
                     <h1 className="text-2xl col-span-6">Rewards</h1>
                     <span className="grid justify-items-end content-center text-center">
@@ -25,8 +47,8 @@ export default function List({ auth }: PageProps) {
                         />
                     </span>
                 </div>
-                {product.map((data: number) => (
-                    <Link href={route("rewards.show", data)}>
+                {rewards.map((data: Rewards, key: number) => (
+                    <Link href={route("rewards.show", data.id)} key={key}>
                         <Card
                             orientation="horizontal"
                             variant="outlined"
@@ -35,8 +57,8 @@ export default function List({ auth }: PageProps) {
                             <CardOverflow>
                                 <AspectRatio ratio="1" sx={{ width: 90 }}>
                                     <img
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtJek27VdEiJ1q-Y2Lo_Hl1tqTJO_WHu-alA&s"
-                                        srcSet="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90&dpr=2 2x"
+                                        src={data.thumbnail}
+                                        srcSet={data.thumbnail}
                                         loading="lazy"
                                         alt=""
                                     />
@@ -47,10 +69,10 @@ export default function List({ auth }: PageProps) {
                                     fontWeight="md"
                                     textColor="success.plainColor"
                                 >
-                                    Reward <span>{data}</span>
+                                    {limitCharacter(data.title)}
                                 </Typography>
                                 <Typography level="body-sm">
-                                    California, USA
+                                    {data.partner.name}
                                 </Typography>
                             </CardContent>
                             <CardOverflow
@@ -68,13 +90,25 @@ export default function List({ auth }: PageProps) {
                                     borderColor: "divider",
                                 }}
                             >
-                                10 Coin
+                                {data.price} Coin
                             </CardOverflow>
                         </Card>
                     </Link>
                 ))}
-                <Box width="100%" display="flex" alignItems="center" p={1}>
-                    <Pagination count={6} color="primary" />
+                <Box
+                    width="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    pt={2}
+                    pb={5}
+                >
+                    <Pagination
+                        count={pagination.count}
+                        color="primary"
+                        size="medium"
+                        onChange={handleChange}
+                    />
                 </Box>
             </div>
         </AuthenticatedLayout>

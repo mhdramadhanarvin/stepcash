@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reward;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +13,16 @@ class RewardController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Rewards/List');
+        return Inertia::render('Rewards/List', [
+            'rewards' => $this->getData()
+        ]);
+    }
+
+    public function getData()
+    {
+        $rewards = Reward::with('partner')->where('status', 'publish')->paginate(5);
+
+        return response()->json($rewards);
     }
 
     /**
@@ -36,7 +46,11 @@ class RewardController extends Controller
      */
     public function show(string $id)
     {
-        return Inertia::render('Rewards/Detail');
+        $reward = Reward::with('partner')->find($id);
+
+        return Inertia::render('Rewards/Detail', [
+            'reward' => $reward
+        ]);
     }
 
     /**

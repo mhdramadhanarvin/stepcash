@@ -2,7 +2,7 @@ import CoinIcon from "@/Components/CoinIcon";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PageProps } from "@/types";
+import { PageProps, Rewards } from "@/types";
 import {
     faCheck,
     faChevronLeft,
@@ -14,16 +14,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Detail({ auth }: PageProps) {
+export default function Detail({
+    auth,
+    reward,
+}: PageProps<{ reward: Rewards }>) {
     const [success, setSuccess] = useState(false);
     const handleSuccess = () => {
         setSuccess(!success);
         setFail(!fail);
     };
-    const [fail, setFail] = useState(true);
+    const [fail, setFail] = useState(false);
     const handleFail = () => {
         setFail(!fail);
     };
+
     return (
         <>
             <Modal show={success} onClose={handleSuccess} closeable={true}>
@@ -68,34 +72,33 @@ export default function Detail({ auth }: PageProps) {
                 </Link>
                 <div className="max-w-lg rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col mb-64">
                     <img
-                        src="https://loremflickr.com/800/600/girl"
+                        src={reward.thumbnail}
                         className="shadow rounded-lg overflow-hidden border object-cover h-48 w-96"
                     />
                     <div className="mt-8 px-1">
                         <div className="grid grid-cols-4">
                             <div className="col-span-3">
                                 <h3 className="font-semibold text-xl">
-                                    Reward A
+                                    {reward.title}
                                 </h3>
                                 <h3 className="text-sm">
-                                    Mitra - 5x ditukarkan
+                                    {reward.partner.name} - 5x ditukarkan
                                 </h3>
                             </div>
                             <div className="inline-flex">
                                 <CoinIcon />
                                 <span className="text-xl font-semibold">
-                                    123
+                                    {reward.price}
                                 </span>
                             </div>
                         </div>
                         <p className="mt-2 text-gray-600">
-                            Create Exercises for any subject with the topics you
-                            and your students care about.
+                            {reward.description}
                         </p>
                         <div className="mt-5 flex justify-center">
                             <button
                                 type="button"
-                                className="inline-flex items-center rounded-md border border-transparent bg-white hover:bg-commons px-5 py-3 text-lg font-medium leading-4 shadow-lg text-commons hover:text-white border-commons"
+                                className="inline-flex items-center rounded-md border border-common bg-white hover:bg-commons px-5 py-3 text-lg font-medium leading-4 shadow-lg text-commons hover:text-white border-commons"
                                 onClick={() => setSuccess(true)}
                             >
                                 <FontAwesomeIcon

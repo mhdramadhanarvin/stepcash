@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
+
 interface RewardRepositoryInterface
 {
     public function getById($id);
@@ -16,5 +18,12 @@ interface RewardRepositoryInterface
 
     public function setSearch($keyword);
 
+    public function paginate(Model $model, int $perPage);
+
+    public function setPerPage(int $perPage);
+
+    public function setWhereArg(array $whereArg);
+
+    public function setWithRelation(array $relationName);
     // Add your interface methods here...
 }

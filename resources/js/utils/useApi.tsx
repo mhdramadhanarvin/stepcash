@@ -1,10 +1,15 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 
 interface UseApiProps {
     key: string;
     route: string;
     page?: number;
+}
+
+interface UseApiMutateProps {
+    route: string;
+    payload: object;
 }
 
 export const useApi = ({ key, route, page = 1 }: UseApiProps) => {
@@ -27,4 +32,11 @@ export const useApi = ({ key, route, page = 1 }: UseApiProps) => {
             count: query.data?.last_page,
         },
     };
+};
+
+export const useApiMutate = ({ route, payload }: UseApiMutateProps) => {
+    return useMutation(async () => {
+        const { data } = await axios.post(route, payload);
+        return data;
+    });
 };

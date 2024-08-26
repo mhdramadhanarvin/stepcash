@@ -4,7 +4,6 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, Rewards } from "@/types";
 import {
-    faCheck,
     faChevronLeft,
     faCircleCheck,
     faTicket,
@@ -12,21 +11,32 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@inertiajs/react";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 
 export default function Detail({
     auth,
     reward,
 }: PageProps<{ reward: Rewards }>) {
     const [success, setSuccess] = useState(false);
+
     const handleSuccess = () => {
         setSuccess(!success);
-        setFail(!fail);
     };
     const [fail, setFail] = useState(false);
     const handleFail = () => {
         setFail(!fail);
     };
+
+    const { mutate, isError, isSuccess } = useMutation(async () => {
+        return axios.post(route("rewards.exchange", reward.id));
+    });
+
+    useEffect(() => {
+        if (isError) setFail(true);
+        if (isSuccess) setSuccess(true);
+    }, [isError, isSuccess]);
 
     return (
         <>
@@ -73,7 +83,7 @@ export default function Detail({
                 <div className="max-w-lg rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col mb-64">
                     <img
                         src={reward.thumbnail}
-                        className="shadow rounded-lg overflow-hidden border object-cover h-48 w-96"
+                        className="shadow rounded-lg overflow-hidden border object-cover h-48"
                     />
                     <div className="mt-8 px-1">
                         <div className="grid grid-cols-4">
@@ -99,7 +109,7 @@ export default function Detail({
                             <button
                                 type="button"
                                 className="inline-flex items-center rounded-md border border-common bg-white hover:bg-commons px-5 py-3 text-lg font-medium leading-4 shadow-lg text-commons hover:text-white border-commons"
-                                onClick={() => setSuccess(true)}
+                                onClick={() => mutate()}
                             >
                                 <FontAwesomeIcon
                                     icon={faTicket}

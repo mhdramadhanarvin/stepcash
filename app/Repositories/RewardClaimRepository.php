@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Reward;
 use App\Models\RewardClaim;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 class RewardClaimRepository implements RewardClaimRepositoryInterface
 {
@@ -61,5 +62,23 @@ class RewardClaimRepository implements RewardClaimRepositoryInterface
     {
     }
 
-    // Your repository methods here...
+    public function paginate(Model $model, int $perPage)
+    {
+        return $model->paginate($perPage);
+    }
+
+    public function setPerPage(int $perPage)
+    {
+        $this->perPage = $perPage;
+    }
+
+    public function setWhereArg(array $whereArg)
+    {
+        $this->whereArg = $whereArg ;
+    }
+
+    public function setWithRelation(array $relationName)
+    {
+        $this->withRelation = $relationName;
+    }
 }

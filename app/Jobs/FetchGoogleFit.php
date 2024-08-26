@@ -31,6 +31,7 @@ class FetchGoogleFit implements ShouldQueue
     public function handle(GoogleApiService $googleApiService, StepActivityRepositoryInterface $stepActivityRepository): void
     {
         $data = $googleApiService->syncData($this->user);
+        Log::debug($data);
         $step = $stepActivityRepository->getInToday($this->user->id);
         if (!$step) {
             $stepActivityRepository->create($this->user, [

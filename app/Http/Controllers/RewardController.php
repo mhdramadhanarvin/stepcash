@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidExchangeRewardException;
 use App\Repositories\CoinHistoryRepositoryInterface;
 use App\Repositories\RewardClaimRepositoryInterface;
 use App\Repositories\RewardRepositoryInterface;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Throwable;
 
 class RewardController extends Controller
 {
@@ -61,7 +63,11 @@ class RewardController extends Controller
             $user = $this->userRepository->getById(Auth::id());
 
             if ($user->coin < $reward->price) {
-                throw new \Error('Coin tidak cukup');
+                throw new InvalidExchangeRewardException('Koin Belum Mencukupi', 'Belum cukup nih, kumpulkan lebih banyak lagi yaa.');
+            }
+
+            if ($reward->quantity == 0) {
+                throw new InvalidExchangeRewardException('Stok Sudah Habis', 'Yaaa stok udah habis ni, coba lagi besok yaa.');
             }
 
             $this->userRepository->cutCoin($user, $reward->price);
@@ -71,66 +77,77 @@ class RewardController extends Controller
                 'description' => 'Penukaran ' . $reward->coin . ' coin dengan produk ' . $reward->title
             ]);
             $this->rewardClaimRepository->create($reward, $user, []);
+            $this->rewardRepository->decreaseQuantity($reward->id);
 
             DB::commit();
             return response()->json(['status' => true, 'message' => 'Berhasil']);
         } catch (\Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e);
             DB::rollBack();
-            return response()->json(['status' => false, 'message' => $e->getMessage()], 400);
+            if ($e instanceof InvalidExchangeRewardException) {
+                return response()->json(['message' => $e->getMessage(), 'reason' => $e->getReason()], 400);
+            }
+            return response()->json(['message' => 'Terjadi Kesalahan','reason' => $e->getMessage()], 400);
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $repo = $this->rewardRepository;
-        $repo->setWithRelation(['partner']);
-        $reward = $repo->getById($id);
 
         return Inertia::render('Rewards/Detail', [
-            'reward' => $reward,
+            'id' => $id,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function showGetData(string $id)
+    {
+        $repo = $this->rewardRepository;
+        $repo->setWithRelation(['partner']);
+        return response()->json(['data' => $repo->getById($id)]);
+    }
+
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
+    }
+
+    public function claimsAll()
+    {
+        return Inertia::render('Rewards/History', [
+            'rewards' => $this->getDataClaims()
+        ]);
+    }
+
+    public function getDataClaims()
+    {
+        $repo = $this->rewardClaimRepository;
+        $repo->setWhereArg([
+            ['user_id', '=', Auth::id()]
+        ]);
+        $repo->setWithRelation(['reward', 'user']);
+        $repo->setPerPage(5);
+        $rewards = $repo->getAll();
+
+        return response()->json($rewards);
     }
 }

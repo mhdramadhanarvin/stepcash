@@ -2,7 +2,8 @@ import CoinIcon from "@/Components/CoinIcon";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PageProps, Rewards } from "@/types";
+import { PageProps, ResponseGlobal, Rewards } from "@/types";
+import { useApi } from "@/utils/useApi";
 import {
     faChevronLeft,
     faCircleCheck,
@@ -15,11 +16,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 
-export default function Detail({
-    auth,
-    reward,
-}: PageProps<{ reward: Rewards }>) {
+export default function Detail({ auth, id }: PageProps<{ id: number }>) {
     const [success, setSuccess] = useState(false);
+    const [message, setMessage] = useState<ResponseGlobal>({
+        message: "",
+        reason: "",
+    });
 
     const handleSuccess = () => {
         setSuccess(!success);
@@ -29,14 +31,37 @@ export default function Detail({
         setFail(!fail);
     };
 
-    const { mutate, isError, isSuccess } = useMutation(async () => {
+    const { data, refetch } = useApi({
+        key: "rewards.show.get",
+        route: route("rewards.show.get", id),
+    });
+
+    const reward: Rewards = data ?? {};
+
+    const { mutate } = useMutation(async () => {
         return axios.post(route("rewards.exchange", reward.id));
     });
 
+    const handleSubmit = () => {
+        mutate(undefined, {
+            onError: (error: any) => {
+                if (axios.isAxiosError(error)) {
+                    setFail(true);
+                    setMessage(error.response?.data);
+                    refetch();
+                }
+            },
+            onSuccess(data) {
+                setSuccess(true);
+                setMessage(data.data);
+                refetch();
+            },
+        });
+    };
+
     useEffect(() => {
-        if (isError) setFail(true);
-        if (isSuccess) setSuccess(true);
-    }, [isError, isSuccess]);
+        refetch();
+    }, [refetch]);
 
     return (
         <>
@@ -64,9 +89,9 @@ export default function Detail({
                         className="text-7xl py-4 text-red-500"
                     />
                     <h2 className="text-xl font-semibold mb-2">
-                        Koin Belum Mencukupi
+                        {message.message}
                     </h2>
-                    <p>Belum cukup nih, kumpulkan lebih banyak lagi yaa. </p>
+                    <p>{message.reason}</p>
                     <div className="flex justify-center pt-5">
                         <SecondaryButton onClick={handleFail}>
                             TUTUP
@@ -106,17 +131,30 @@ export default function Detail({
                             {reward.description}
                         </p>
                         <div className="mt-5 flex justify-center">
-                            <button
-                                type="button"
-                                className="inline-flex items-center rounded-md border border-common bg-white hover:bg-commons px-5 py-3 text-lg font-medium leading-4 shadow-lg text-commons hover:text-white border-commons"
-                                onClick={() => mutate()}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faTicket}
-                                    className="mx-3"
-                                />
-                                Tukarkan Sekarang
-                            </button>
+                            {reward.quantity == 0 ? (
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center rounded-md border border-gray-200 bg-gray-200 hover:bg-black px-5 py-3 text-lg font-medium leading-4 shadow-lg text-black hover:text-white border-black"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faTicket}
+                                        className="mx-3"
+                                    />
+                                    Stok Habis
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center rounded-md border border-common bg-white hover:bg-commons px-5 py-3 text-lg font-medium leading-4 shadow-lg text-commons hover:text-white border-commons"
+                                    onClick={handleSubmit}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faTicket}
+                                        className="mx-3"
+                                    />
+                                    Tukarkan Sekarang
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

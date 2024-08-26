@@ -48,6 +48,14 @@ class RewardRepository implements RewardRepositoryInterface
 
     public function update(array $data, $id)
     {
+        $stepActivity = $this->getById($id);
+        return $stepActivity->update($data);
+    }
+
+    public function decreaseQuantity($id)
+    {
+        $reward = $this->getById($id);
+        return $this->update(['quantity' => $reward->quantity - 1], $id);
     }
 
     public function delete($id)

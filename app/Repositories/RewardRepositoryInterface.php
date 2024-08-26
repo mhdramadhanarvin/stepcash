@@ -14,6 +14,8 @@ interface RewardRepositoryInterface
 
     public function update(array $data, $id);
 
+    public function decreaseQuantity($id);
+
     public function delete($id);
 
     public function setSearch($keyword);

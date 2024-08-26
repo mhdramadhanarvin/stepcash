@@ -40,12 +40,15 @@ export default function List({ auth }: PageProps) {
             <div className="w-full pb-24">
                 <div className="mb-5 grid grid-cols-7">
                     <h1 className="text-2xl col-span-6">Rewards</h1>
-                    <span className="grid justify-items-end content-center text-center">
+                    <Link
+                        href={route("rewards.claims.index")}
+                        className="grid justify-items-end content-center text-center"
+                    >
                         <FontAwesomeIcon
                             icon={faClockRotateLeft}
                             className="text-xl"
                         />
-                    </span>
+                    </Link>
                 </div>
                 {rewards.map((data: Rewards, key: number) => (
                     <Link href={route("rewards.show", data.id)} key={key}>

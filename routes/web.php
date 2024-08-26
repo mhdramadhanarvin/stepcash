@@ -21,7 +21,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware('auth')->group(function () {
     Route::get('/sync', [DashboardController::class, 'sync'])->name('dashboard.sync');
     Route::get('/rewards/getData', [RewardController::class, 'getData'])->name('rewards.get');
+    Route::post('/rewards/exchange/{id}', [RewardController::class, 'exchange'])->name('rewards.exchange');
     Route::resource('rewards', RewardController::class);
+    Route::get('/profile/getData', [ProfileController::class, 'getData'])->name('profile.get');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

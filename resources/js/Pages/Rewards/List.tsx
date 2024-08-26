@@ -61,6 +61,7 @@ export default function List({ auth }: PageProps) {
                                         srcSet={data.thumbnail}
                                         loading="lazy"
                                         alt=""
+                                        className="object-cover"
                                     />
                                 </AspectRatio>
                             </CardOverflow>

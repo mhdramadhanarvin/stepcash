@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 use App\Jobs\FetchGoogleFit;
+use App\Repositories\CoinHistoryRepository;
+use App\Repositories\CoinHistoryRepositoryInterface;
+use App\Repositories\RewardClaimRepository;
+use App\Repositories\RewardClaimRepositoryInterface;
+use App\Repositories\RewardRepository;
+use App\Repositories\RewardRepositoryInterface;
 use App\Repositories\TokenRepository;
 use App\Repositories\TokenRepositoryInterface;
 use App\Repositories\UserRepository;
@@ -11,7 +17,6 @@ use App\Repositories\StepActivityRepository;
 use App\Repositories\StepActivityRepositoryInterface;
 use App\Services\GoogleApiService;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,8 +30,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(TokenRepositoryInterface::class, TokenRepository::class);
         $this->app->bind(StepActivityRepositoryInterface::class, StepActivityRepository::class);
-        /*$this->app->bind(CoinActivityRepositoryInterface::class, CoinActivityRepository::class);*/
-        /*$this->app->bind(RewardRepositoryInterface::class, RewardRepository::class);*/
+        $this->app->bind(CoinHistoryRepositoryInterface::class, CoinHistoryRepository::class);
+        $this->app->bind(RewardRepositoryInterface::class, RewardRepository::class);
+        $this->app->bind(RewardClaimRepositoryInterface::class, RewardClaimRepository::class);
         /*$this->app->bind(BonusRepositoryInterface::class, BonusRepository::class);*/
         /*$this->app->bind(BonusHistoryRepositoryInterface::class, BonusHistoryRepository::class);*/
         /*$this->app->bind(CoinRateRepositoryInterface::class, CoinRateRepository::class);*/

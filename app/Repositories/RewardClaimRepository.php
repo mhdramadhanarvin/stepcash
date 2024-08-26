@@ -3,9 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Reward;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\RewardClaim;
+use App\Models\User;
 
-class RewardRepository implements RewardRepositoryInterface
+class RewardClaimRepository implements RewardClaimRepositoryInterface
 {
     protected $model;
     protected $search;
@@ -13,7 +14,7 @@ class RewardRepository implements RewardRepositoryInterface
     protected $whereArg;
     protected $withRelation;
 
-    public function __construct(Reward $model)
+    public function __construct(RewardClaim $model)
     {
         $this->model = $model;
     }
@@ -42,8 +43,10 @@ class RewardRepository implements RewardRepositoryInterface
         return $data->get();
     }
 
-    public function create(object $object, array $data)
+    public function create(Reward $reward, User $user, array $data)
     {
+        $data = array_merge($data, ['user_id' => $user->id, 'reward_id' => $reward->id, 'price' => $reward->price]);
+        return $this->model->create($data);
     }
 
     public function update(array $data, $id)
@@ -56,26 +59,6 @@ class RewardRepository implements RewardRepositoryInterface
 
     public function setSearch($keyword)
     {
-    }
-
-    public function paginate(Model $model, int $perPage)
-    {
-        return $model->paginate($perPage);
-    }
-
-    public function setPerPage(int $perPage)
-    {
-        $this->perPage = $perPage;
-    }
-
-    public function setWhereArg(array $whereArg)
-    {
-        $this->whereArg = $whereArg ;
-    }
-
-    public function setWithRelation(array $relationName)
-    {
-        $this->withRelation = $relationName;
     }
 
     // Your repository methods here...

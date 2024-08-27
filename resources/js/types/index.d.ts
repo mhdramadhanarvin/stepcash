@@ -14,6 +14,11 @@ export type PageProps<
     };
 };
 
+export interface ResponseGlobal {
+    message: string;
+    reason: string;
+}
+
 export interface Tracker {
     step: number;
     target: number;
@@ -26,6 +31,14 @@ export enum PartnerSector {
     FOOD_AND_BEVARAGE = "food_and_bevarage",
     SPORTS = "sports",
     OTHER = "other",
+}
+
+export enum RewardClaimStatus {
+    WAITING_CONFIRMATION = "waiting_confirmation",
+    ON_PROGRESS = "on_progress",
+    READY_TO_PICKUP = "ready_to_pickup",
+    DONE = "done",
+    REJECTED = "rejected",
 }
 
 export interface Partner {
@@ -43,4 +56,13 @@ export interface Rewards {
     quantity: number;
     price: number;
     thumbnail: string;
+}
+
+export interface RewardClaims {
+    id: number;
+    reward: Rewards;
+    user: User;
+    price: number;
+    status: RewardClaimStatus;
+    reason_rejection: string;
 }

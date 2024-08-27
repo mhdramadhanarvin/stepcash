@@ -107,31 +107,31 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
                 </Link>
                 <div className="max-w-lg rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col mb-64">
                     <img
-                        src={reward.thumbnail}
+                        src={reward?.thumbnail}
                         className="shadow rounded-lg overflow-hidden border object-cover h-48"
                     />
                     <div className="mt-8 px-1">
                         <div className="grid grid-cols-4">
                             <div className="col-span-3">
                                 <h3 className="font-semibold text-xl">
-                                    {reward.title}
+                                    {reward?.title}
                                 </h3>
                                 <h3 className="text-sm">
-                                    {reward.partner.name} - 5x ditukarkan
+                                    {reward?.partner?.name} - 5x ditukarkan
                                 </h3>
                             </div>
                             <div className="inline-flex">
                                 <CoinIcon />
                                 <span className="text-xl font-semibold">
-                                    {reward.price}
+                                    {reward?.price}
                                 </span>
                             </div>
                         </div>
                         <p className="mt-2 text-gray-600">
-                            {reward.description}
+                            {reward?.description}
                         </p>
                         <div className="mt-5 flex justify-center">
-                            {reward.quantity == 0 ? (
+                            {reward?.quantity == 0 ? (
                                 <button
                                     type="button"
                                     className="inline-flex items-center rounded-md border border-gray-200 bg-gray-200 hover:bg-black px-5 py-3 text-lg font-medium leading-4 shadow-lg text-black hover:text-white border-black"

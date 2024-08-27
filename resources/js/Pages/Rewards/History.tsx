@@ -34,7 +34,7 @@ export default function History({ auth }: PageProps) {
     const rewardClaims: RewardClaims[] = data ?? [];
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="w-full pb-96">
+            <div className="w-full">
                 <div className="mb-5">
                     <h1 className="text-2xl col-span-6">Riwayat Penukaran</h1>
                 </div>

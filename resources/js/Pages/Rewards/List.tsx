@@ -37,7 +37,7 @@ export default function List({ auth }: PageProps) {
     const rewards: Rewards[] = data ?? [];
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="w-full pb-24">
+            <div className="w-full">
                 <div className="mb-5 grid grid-cols-7">
                     <h1 className="text-2xl col-span-6">Rewards</h1>
                     <Link

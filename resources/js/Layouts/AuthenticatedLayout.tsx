@@ -172,9 +172,9 @@ export default function Authenticated({
                         active={route().current("rewards.*")}
                     />
                     <NavIcon
-                        path={route("profile.edit")}
+                        path={route("notifications.index")}
                         icon={faBell}
-                        active={route().current("profile.edit")}
+                        active={route().current("notifications.*")}
                     />
                     <NavIcon
                         path={route("profile.edit")}

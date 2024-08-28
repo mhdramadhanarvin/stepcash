@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Jobs\FetchGoogleFit;
 use App\Repositories\CoinHistoryRepository;
 use App\Repositories\CoinHistoryRepositoryInterface;
+use App\Repositories\NotificationRepository;
+use App\Repositories\NotificationRepositoryInterface;
 use App\Repositories\RewardClaimRepository;
 use App\Repositories\RewardClaimRepositoryInterface;
 use App\Repositories\RewardRepository;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CoinHistoryRepositoryInterface::class, CoinHistoryRepository::class);
         $this->app->bind(RewardRepositoryInterface::class, RewardRepository::class);
         $this->app->bind(RewardClaimRepositoryInterface::class, RewardClaimRepository::class);
+        $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
         /*$this->app->bind(BonusRepositoryInterface::class, BonusRepository::class);*/
         /*$this->app->bind(BonusHistoryRepositoryInterface::class, BonusHistoryRepository::class);*/
         /*$this->app->bind(CoinRateRepositoryInterface::class, CoinRateRepository::class);*/

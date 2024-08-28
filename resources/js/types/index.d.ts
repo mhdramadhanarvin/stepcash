@@ -66,3 +66,11 @@ export interface RewardClaims {
     status: RewardClaimStatus;
     reason_rejection: string;
 }
+
+export interface Notification {
+    id: number;
+    user: User;
+    title: string;
+    message: string;
+    is_read: boolean;
+}

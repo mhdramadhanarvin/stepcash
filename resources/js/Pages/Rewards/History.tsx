@@ -38,6 +38,11 @@ export default function History({ auth }: PageProps) {
                 <div className="mb-5">
                     <h1 className="text-2xl col-span-6">Riwayat Penukaran</h1>
                 </div>
+                {rewardClaims.length == 0 && (
+                    <div className="flex justify-center py-5">
+                        Belum Ada Data
+                    </div>
+                )}
                 {rewardClaims.map((data: RewardClaims, key: number) => (
                     <Card
                         orientation="horizontal"

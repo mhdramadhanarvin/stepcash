@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NotificationEnum;
 use App\Exceptions\InvalidExchangeRewardException;
 use App\Repositories\CoinHistoryRepositoryInterface;
+use App\Repositories\NotificationRepositoryInterface;
 use App\Repositories\RewardClaimRepositoryInterface;
 use App\Repositories\RewardRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Throwable;
 
 class RewardController extends Controller
 {
@@ -20,17 +20,20 @@ class RewardController extends Controller
     protected $coinHistoryRepository;
     protected $rewardRepository;
     protected $rewardClaimRepository;
+    protected $notificationRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         CoinHistoryRepositoryInterface $coinHistoryRepository,
         RewardRepositoryInterface $rewardRepository,
-        RewardClaimRepositoryInterface $rewardClaimRepository
+        RewardClaimRepositoryInterface $rewardClaimRepository,
+        NotificationRepositoryInterface $notificationRepository,
     ) {
         $this->userRepository = $userRepository;
         $this->coinHistoryRepository = $coinHistoryRepository;
         $this->rewardRepository = $rewardRepository;
         $this->rewardClaimRepository = $rewardClaimRepository;
+        $this->notificationRepository = $notificationRepository;
     }
     /**
      * Display a listing of the resource.
@@ -74,10 +77,14 @@ class RewardController extends Controller
             $this->coinHistoryRepository->create($user, [
                 'coin' => $reward->price,
                 'type' => 'cut',
-                'description' => 'Penukaran ' . $reward->coin . ' coin dengan produk ' . $reward->title
+                'description' => 'Penukaran ' . $reward->price . ' coin dengan produk ' . $reward->title
             ]);
             $this->rewardClaimRepository->create($reward, $user, []);
             $this->rewardRepository->decreaseQuantity($reward->id);
+            $this->notificationRepository->create($reward->partner->user, [
+                'title' => NotificationEnum::NEW_EXCHANGE,
+                'message' => 'Penukaran baru pada produk ' . $reward->title . ' senilai ' .$reward->price
+            ]);
 
             DB::commit();
             return response()->json(['status' => true, 'message' => 'Berhasil']);
@@ -91,19 +98,8 @@ class RewardController extends Controller
         }
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
     public function show(string $id)
     {
-
         return Inertia::render('Rewards/Detail', [
             'id' => $id,
         ]);
@@ -114,21 +110,6 @@ class RewardController extends Controller
         $repo = $this->rewardRepository;
         $repo->setWithRelation(['partner']);
         return response()->json(['data' => $repo->getById($id)]);
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function claimsAll()

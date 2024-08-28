@@ -50,6 +50,11 @@ export default function List({ auth }: PageProps) {
                         />
                     </Link>
                 </div>
+                {rewards.length == 0 && (
+                    <div className="flex justify-center py-5">
+                        Belum Ada Data
+                    </div>
+                )}
                 {rewards.map((data: Rewards, key: number) => (
                     <Link href={route("rewards.show", data.id)} key={key}>
                         <Card

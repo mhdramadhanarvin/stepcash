@@ -1,9 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Notification, PageProps, Rewards } from "@/types";
+import { Notification, PageProps } from "@/types";
 import { useApi } from "@/utils/useApi";
-import { faBell, faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@inertiajs/react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";

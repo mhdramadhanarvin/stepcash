@@ -11,7 +11,7 @@ import {
     faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
@@ -100,6 +100,7 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
                 </div>
             </Modal>
             <AuthenticatedLayout user={auth.user}>
+                <Head title="Detail Reward" />
                 <Link href={route("rewards.index")}>
                     <button className="p-3">
                         <FontAwesomeIcon icon={faChevronLeft} />
@@ -117,7 +118,8 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
                                     {reward?.title}
                                 </h3>
                                 <h3 className="text-sm">
-                                    {reward?.partner?.name} - 5x ditukarkan
+                                    {reward?.partner?.name} - Stok{" "}
+                                    {reward?.quantity}
                                 </h3>
                             </div>
                             <div className="inline-flex">

@@ -1,6 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, RewardClaims } from "@/types";
 import { useApi } from "@/utils/useApi";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Head, Link } from "@inertiajs/react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -34,6 +37,12 @@ export default function History({ auth }: PageProps) {
     const rewardClaims: RewardClaims[] = data ?? [];
     return (
         <AuthenticatedLayout user={auth.user}>
+            <Head title="History Claim Reward" />
+            <Link href={route("rewards.index")}>
+                <button className="p-3">
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                </button>
+            </Link>
             <div className="w-full">
                 <div className="mb-5">
                     <h1 className="text-2xl col-span-6">Riwayat Penukaran</h1>

@@ -10,6 +10,8 @@ import {
 import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
 import { Head } from "@inertiajs/react";
 import { useQuery } from "react-query";
+import { useState } from "react";
+import { loadavg } from "os";
 
 const theme = createTheme({
     palette: {
@@ -19,21 +21,28 @@ const theme = createTheme({
     },
 });
 
-export default function Dashboard({
-    auth,
-    tracker,
-}: PageProps<{ tracker: Tracker }>) {
-    const calculate = Math.round((tracker.step / tracker.target) * 100);
-    const progress = calculate >= 100 ? 100 : calculate;
+export default function Dashboard({ auth }: PageProps) {
+    const [loading, setLoading] = useState<boolean>(false);
 
     const fetchData = async () => {
         const response = await fetch(route("dashboard.sync"));
         return await response.json();
     };
 
-    const { data } = useQuery(["stepData"], fetchData);
+    const { data, refetch } = useQuery(["stepData"], fetchData);
 
     const step: Tracker = data ?? 0;
+
+    const calculate = Math.round((step.step / 7000) * 100);
+    const progress = calculate >= 100 ? 100 : calculate;
+
+    const refetchData = () => {
+        setLoading(true);
+        refetch();
+        setTimeout(() => {
+            setLoading(false);
+        }, 15000);
+    };
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -43,7 +52,10 @@ export default function Dashboard({
                 <h2 className="text-2xl font-semibold">{auth.user.name}</h2>
             </div>
             <div className="w-full flex justify-center items-center text-center">
-                <div className="w-40 h-40 bg-yellow-400 text-white grid justify-items-center content-center rounded-full mt-8 relative">
+                <div
+                    className={`w-40 h-40 bg-yellow-400 text-white grid justify-items-center content-center rounded-full mt-8 relative ${loading ? "animate-ping" : ""}`}
+                    onClick={refetchData}
+                >
                     <FontAwesomeIcon
                         icon={faWalking}
                         className="text-6xl mt-1"
@@ -78,7 +90,7 @@ export default function Dashboard({
                         />
                     </div>
                     <div className="py-2">
-                        <span>{step.time_spent} Time</span>
+                        <span>{step.time_spent} m</span>
                     </div>
                 </div>
                 <div>

@@ -3,6 +3,7 @@ import { Notification, PageProps } from "@/types";
 import { useApi } from "@/utils/useApi";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Head } from "@inertiajs/react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -68,6 +69,7 @@ export default function List({ auth }: PageProps) {
     const primary = grey[200];
     return (
         <AuthenticatedLayout user={auth.user}>
+            <Head title="Notification" />
             <div className="w-full">
                 <div className="mb-5 grid grid-cols-7">
                     <h1 className="text-2xl col-span-5">Notification</h1>
@@ -113,13 +115,26 @@ export default function List({ auth }: PageProps) {
                             </AspectRatio>
                         </CardOverflow>
                         <CardContent>
-                            <Typography
-                                fontWeight="md"
-                                textColor="success.plainColor"
-                            >
-                                {data.title}
-                            </Typography>
-                            <Typography level="body-sm">
+                            <div className="grid grid-cols-7">
+                                <div className="col-span-5">
+                                    <Typography
+                                        level="title-sm"
+                                        fontWeight="md"
+                                        textColor="success.plainColor"
+                                    >
+                                        {data.title}
+                                    </Typography>
+                                </div>
+                                <Typography
+                                    level="body-xs"
+                                    sx={{ paddingLeft: 2 }}
+                                >
+                                    {new Date(
+                                        data.created_at,
+                                    ).toLocaleDateString("id-ID")}
+                                </Typography>
+                            </div>
+                            <Typography level="body-xs">
                                 {data.message}
                             </Typography>
                         </CardContent>

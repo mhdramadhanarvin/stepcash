@@ -26,18 +26,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $step = $this->stepActivityRepository->getInToday(Auth::id());
-        FetchGoogleFit::dispatch(Auth::user());
-
-        return Inertia::render('Dashboard', [
-            'tracker' => [
-                'step' => $step->step,
-                'calory' => $step->calory,
-                'time_spent' => $step->time_spent,
-                'distance' => $step->distance,
-                'target' => $this->target,
-            ]
-        ]);
+        return Inertia::render('Dashboard');
     }
 
     public function sync()

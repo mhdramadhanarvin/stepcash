@@ -3,7 +3,7 @@ import { PageProps, Rewards } from "@/types";
 import { useApi } from "@/utils/useApi";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -37,6 +37,7 @@ export default function List({ auth }: PageProps) {
     const rewards: Rewards[] = data ?? [];
     return (
         <AuthenticatedLayout user={auth.user}>
+            <Head title="List Reward" />
             <div className="w-full">
                 <div className="mb-5 grid grid-cols-7">
                     <h1 className="text-2xl col-span-6">Rewards</h1>

@@ -32,6 +32,7 @@ class FetchGoogleFit implements ShouldQueue
     public function handle(GoogleApiService $googleApiService, StepActivityRepositoryInterface $stepActivityRepository): void
     {
         DB::beginTransaction();
+        Log::info("Queue FetchGoogleFit: STARTING..");
         try {
             $data = $googleApiService->syncData($this->user);
             $step = $stepActivityRepository->getInToday($this->user->id);
@@ -51,6 +52,7 @@ class FetchGoogleFit implements ShouldQueue
                 ], $step->id);
             }
             DB::commit();
+            Log::debug(json_encode($data));
             Log::info("Queue FetchGoogleFit: DONE..");
         } catch (\Throwable $e) {
             Log::error("Queue FetchGoogleFit: " . $e->getMessage());

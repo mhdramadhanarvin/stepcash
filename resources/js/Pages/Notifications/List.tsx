@@ -42,7 +42,7 @@ export default function List({ auth }: PageProps) {
                     refetch();
                 }
             },
-            onSuccess(data) {
+            onSuccess() {
                 refetch();
             },
         });
@@ -55,7 +55,7 @@ export default function List({ auth }: PageProps) {
                     refetch();
                 }
             },
-            onSuccess(data) {
+            onSuccess() {
                 refetch();
             },
         });

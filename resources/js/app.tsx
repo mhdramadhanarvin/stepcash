@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { QueryClient, QueryClientProvider } from "react-query";
+import reportWebVitals from "./reportWebVitals";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -30,7 +31,18 @@ createInertiaApp({
             </QueryClientProvider>,
         );
     },
-    //progress: {
-    //    color: "#4B5563",
-    //},
 });
+
+reportWebVitals();
+
+navigator.serviceWorker
+    .register("build/sw.js")
+    .then((registration) => {
+        console.log(
+            "ServiceWorker registered with scope: ",
+            registration.scope,
+        );
+    })
+    .catch((error) => {
+        console.error("ServiceWorker registration failed: ", error);
+    });

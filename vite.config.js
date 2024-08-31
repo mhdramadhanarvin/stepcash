@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
     plugins: [
@@ -10,6 +11,50 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        VitePWA({
+            registerType: "prompt",
+            includeAssets: [
+                "/icons/favicon.svg",
+                "/icons/favicon.ico",
+                "robots.txt",
+                "icons/apple-touch-icon.png",
+            ],
+            manifest: {
+                name: "StepCash",
+                start_url: "/",
+                short_name: "StepCash",
+                description: "Convert your step to any reward.",
+                theme_color: "#ffffff",
+                icons: [
+                    {
+                        src: "/icons/android-chrome-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png",
+                    },
+                    {
+                        src: "/icons/android-chrome-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+                screenshots: [
+                    {
+                        src: "/screenshots/screenshot-mobile-1.png",
+                        sizes: "640x1136",
+                        type: "image/png",
+                    },
+                    {
+                        src: "/screenshots/screenshot-desktop-1.png",
+                        sizes: "1280x800",
+                        type: "image/png",
+                    },
+                ],
+            },
+            workbox: {
+                globPatterns: ["*/*.*", "*.*"],
+                navigateFallback: null,
+            },
+        }),
     ],
     resolve: {
         alias: {

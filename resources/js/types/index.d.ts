@@ -65,6 +65,7 @@ export interface RewardClaims {
     price: number;
     status: RewardClaimStatus;
     reason_rejection: string;
+    created_at: Date;
 }
 
 export interface Notification {

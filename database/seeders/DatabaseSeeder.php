@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CoinRate;
 use App\Models\Notification;
 use App\Models\Partner;
 use App\Models\User;
@@ -18,6 +19,12 @@ class DatabaseSeeder extends Seeder
         User::factory()->has(Partner::factory()->hasRewards(100, ['status' => 'publish']))->create([
             'name' => 'Mitra',
             'email' => 'partner@example.com',
+        ]);
+        CoinRate::create([
+            'coin' => 3,
+            'rupiah' => 30,
+            'step' => 1000,
+            'coin_balance' => 100000000
         ]);
     }
 }

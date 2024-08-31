@@ -5,11 +5,15 @@ namespace App\Repositories;
 use App\Models\StepActivity;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class StepActivityRepository implements StepActivityRepositoryInterface
 {
     protected $model;
     protected $search;
+    protected $perPage;
+    protected $whereArg;
+    protected $withRelation;
 
     public function __construct(StepActivity $model)
     {
@@ -23,6 +27,17 @@ class StepActivityRepository implements StepActivityRepositoryInterface
 
     public function getAll()
     {
+        $data = $this->model;
+        if ($this->withRelation != null) {
+            $data = $data->with($this->withRelation);
+        }
+        if ($this->whereArg !== null) {
+            $data = $data->where($this->whereArg);
+        }
+        if ($this->perPage != null) {
+            return $data->paginate($this->perPage);
+        }
+        return $data->get();
     }
 
     public function getInToday($user_id)
@@ -32,7 +47,7 @@ class StepActivityRepository implements StepActivityRepositoryInterface
 
     public function getAllTodayNotConvert()
     {
-        return $this->model->where('is_convert', 0)->whereDate('created_at', Carbon::today())->get();
+        return $this->model->where('is_convert', 0)->get();
     }
 
     public function create(User $user, array $data)
@@ -55,5 +70,23 @@ class StepActivityRepository implements StepActivityRepositoryInterface
     {
     }
 
-    // Your repository methods here...
+    public function paginate(Model $model, int $perPage)
+    {
+        return $model->paginate($perPage);
+    }
+
+    public function setPerPage(int $perPage)
+    {
+        $this->perPage = $perPage;
+    }
+
+    public function setWhereArg(array $whereArg)
+    {
+        $this->whereArg = $whereArg ;
+    }
+
+    public function setWithRelation(array $relationName)
+    {
+        $this->withRelation = $relationName;
+    }
 }

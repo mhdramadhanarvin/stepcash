@@ -79,7 +79,9 @@ export default function History({ auth }: PageProps) {
                                 {limitCharacter(data.reward.title)}
                             </Typography>
                             <Typography level="body-xs">
-                                14 Desember 2024
+                                {new Date(data.created_at).toLocaleString(
+                                    "id-ID",
+                                )}
                             </Typography>
                             <Typography level="body-sm">
                                 <span className="inline-flex font-bold items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">

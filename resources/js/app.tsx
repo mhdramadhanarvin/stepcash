@@ -31,15 +31,10 @@ createInertiaApp({
             </QueryClientProvider>,
         );
     },
-    //progress: {
-    //    color: "#4B5563",
-    //},
 });
 
 reportWebVitals();
 
-//if ("serviceWorker" in navigator) {
-//    window.addEventListener("load", () => {
 navigator.serviceWorker
     .register("build/sw.js")
     .then((registration) => {
@@ -51,5 +46,3 @@ navigator.serviceWorker
     .catch((error) => {
         console.error("ServiceWorker registration failed: ", error);
     });
-//    });
-//}

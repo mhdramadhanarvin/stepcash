@@ -11,7 +11,6 @@ import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
 import { Head } from "@inertiajs/react";
 import { useQuery } from "react-query";
 import { useState } from "react";
-import { loadavg } from "os";
 
 const theme = createTheme({
     palette: {
@@ -90,7 +89,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>{step.time_spent} m</span>
+                        <span>{step.time_spent} min</span>
                     </div>
                 </div>
                 <div>

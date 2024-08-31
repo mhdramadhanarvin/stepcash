@@ -20,10 +20,10 @@ export default defineConfig({
                 "apple-touch-icon.png",
             ],
             manifest: {
-                name: "My Laravel PWA",
+                name: "StepCash",
                 start_url: "/",
-                short_name: "LaravelPWA",
-                description: "My Laravel Inertia.js React PWA application",
+                short_name: "StepCash",
+                description: "Convert your step to any reward.",
                 theme_color: "#ffffff",
                 icons: [
                     {
@@ -34,6 +34,18 @@ export default defineConfig({
                     {
                         src: "/icons/icon-512x512.png",
                         sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+                screenshots: [
+                    {
+                        src: "/screenshots/screenshot-mobile-1.png",
+                        sizes: "640x1136",
+                        type: "image/png",
+                    },
+                    {
+                        src: "/screenshots/screenshot-desktop-1.png",
+                        sizes: "1280x800",
                         type: "image/png",
                     },
                 ],

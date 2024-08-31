@@ -12,8 +12,7 @@ export default defineConfig({
         }),
         react(),
         VitePWA({
-            strategies: "generateSW",
-            //registerType: "autoUpdate",
+            registerType: "prompt",
             includeAssets: [
                 "favicon.svg",
                 "favicon.ico",
@@ -22,24 +21,26 @@ export default defineConfig({
             ],
             manifest: {
                 name: "My Laravel PWA",
+                start_url: "/",
                 short_name: "LaravelPWA",
                 description: "My Laravel Inertia.js React PWA application",
                 theme_color: "#ffffff",
                 icons: [
                     {
-                        src: "/icons/icon-192x192.png",
+                        src: "icon-192x192.png",
                         sizes: "192x192",
                         type: "image/png",
                     },
                     {
-                        src: "/icons/icon-512x512.png",
+                        src: "icon-512x512.png",
                         sizes: "512x512",
                         type: "image/png",
                     },
                 ],
             },
             workbox: {
-                globPatterns: ["**/*.{js,css,html,png,svg,ico}"], // Ensure index.html and other assets are included
+                globPatterns: ["*/*.*", "*.*"],
+                navigateFallback: null,
             },
         }),
     ],

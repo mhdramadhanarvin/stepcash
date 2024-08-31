@@ -14,7 +14,7 @@ createInertiaApp({
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.tsx`,
-            import.meta.glob("./Pages/**/*.tsx"),
+            import.meta.glob(["./Pages/**/*.tsx", "../icons/**"]),
         ),
     setup({ el, App, props }) {
         const root = createRoot(el);
@@ -38,18 +38,18 @@ createInertiaApp({
 
 reportWebVitals();
 
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker
-            .register("/build/sw.js")
-            .then((registration) => {
-                console.log(
-                    "ServiceWorker registered with scope: ",
-                    registration.scope,
-                );
-            })
-            .catch((error) => {
-                console.error("ServiceWorker registration failed: ", error);
-            });
+//if ("serviceWorker" in navigator) {
+//    window.addEventListener("load", () => {
+navigator.serviceWorker
+    .register("build/sw.js")
+    .then((registration) => {
+        console.log(
+            "ServiceWorker registered with scope: ",
+            registration.scope,
+        );
+    })
+    .catch((error) => {
+        console.error("ServiceWorker registration failed: ", error);
     });
-}
+//    });
+//}

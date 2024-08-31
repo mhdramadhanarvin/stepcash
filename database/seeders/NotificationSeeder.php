@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\CoinHistory;
 use App\Models\Notification;
 use App\Models\StepActivity;
 use App\Models\User;

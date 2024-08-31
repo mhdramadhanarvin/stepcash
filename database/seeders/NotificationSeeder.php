@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\CoinHistory;
 use App\Models\Notification;
+use App\Models\StepActivity;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,5 +25,6 @@ class NotificationSeeder extends Seeder
         Notification::factory()->count(10)->for(User::find(2))->create();
         sleep(10);
         Notification::factory()->count(10)->for(User::find(2))->create();
+        StepActivity::factory()->count(10)->for(User::find(2))->create();
     }
 }

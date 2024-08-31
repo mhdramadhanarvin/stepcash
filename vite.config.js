@@ -14,10 +14,10 @@ export default defineConfig({
         VitePWA({
             registerType: "prompt",
             includeAssets: [
-                "/icons/favicon.svg",
-                "/icons/favicon.ico",
+                "/images/favicon.svg",
+                "/images/favicon.ico",
                 "robots.txt",
-                "icons/apple-touch-icon.png",
+                "/images/apple-touch-icon.png",
             ],
             manifest: {
                 name: "StepCash",
@@ -27,12 +27,12 @@ export default defineConfig({
                 theme_color: "#ffffff",
                 icons: [
                     {
-                        src: "/icons/android-chrome-192x192.png",
+                        src: "/images/android-chrome-192x192.png",
                         sizes: "192x192",
                         type: "image/png",
                     },
                     {
-                        src: "/icons/android-chrome-512x512.png",
+                        src: "/images/android-chrome-512x512.png",
                         sizes: "512x512",
                         type: "image/png",
                     },
@@ -59,6 +59,7 @@ export default defineConfig({
     resolve: {
         alias: {
             "~fonts": path.resolve(__dirname, "resources/fonts"),
+            "@images": path.resolve(__dirname, "resources/images/"),
         },
     },
 });

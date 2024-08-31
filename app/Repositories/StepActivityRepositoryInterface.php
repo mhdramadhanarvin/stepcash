@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 interface StepActivityRepositoryInterface
 {
@@ -22,5 +23,11 @@ interface StepActivityRepositoryInterface
 
     public function setSearch($keyword);
 
-    // Add your interface methods here...
+    public function paginate(Model $model, int $perPage);
+
+    public function setPerPage(int $perPage);
+
+    public function setWhereArg(array $whereArg);
+
+    public function setWithRelation(array $relationName);
 }

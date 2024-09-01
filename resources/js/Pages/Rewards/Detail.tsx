@@ -42,6 +42,11 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
         return axios.post(route("rewards.exchange", reward.id));
     });
 
+    const { refetch: refetchProfile } = useApi({
+        key: "profile",
+        route: route("profile.get"),
+    });
+
     const handleSubmit = () => {
         mutate(undefined, {
             onError: (error: any) => {
@@ -49,12 +54,14 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
                     setFail(true);
                     setMessage(error.response?.data);
                     refetch();
+                    refetchProfile();
                 }
             },
             onSuccess(data) {
                 setSuccess(true);
                 setMessage(data.data);
                 refetch();
+                refetchProfile();
             },
         });
     };

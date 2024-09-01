@@ -27,6 +27,11 @@ export default function List({ auth }: PageProps) {
         setPage(p);
     };
 
+    const { refetch: refetchUnread } = useApi({
+        key: "notifications.unread",
+        route: route("notifications.getUnread"),
+    });
+
     const { mutate: setReadOne } = useMutation(async (id: number) => {
         return axios.post(route("notifications.setRead", id));
     });
@@ -40,10 +45,12 @@ export default function List({ auth }: PageProps) {
             onError: (error: any) => {
                 if (axios.isAxiosError(error)) {
                     refetch();
+                    refetchUnread();
                 }
             },
             onSuccess() {
                 refetch();
+                refetchUnread();
             },
         });
     };
@@ -53,10 +60,12 @@ export default function List({ auth }: PageProps) {
             onError: (error: any) => {
                 if (axios.isAxiosError(error)) {
                     refetch();
+                    refetchUnread();
                 }
             },
             onSuccess() {
                 refetch();
+                refetchUnread();
             },
         });
     };

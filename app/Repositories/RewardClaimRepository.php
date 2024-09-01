@@ -39,9 +39,9 @@ class RewardClaimRepository implements RewardClaimRepositoryInterface
             $data = $data->where($this->whereArg);
         }
         if ($this->perPage != null) {
-            return $data->paginate($this->perPage);
+            return $data->latest()->paginate($this->perPage);
         }
-        return $data->get();
+        return $data->latest()->get();
     }
 
     public function create(Reward $reward, User $user, array $data)

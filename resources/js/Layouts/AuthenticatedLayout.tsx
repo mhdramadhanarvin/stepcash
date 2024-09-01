@@ -1,5 +1,4 @@
 import { useState, PropsWithChildren, ReactNode } from "react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
@@ -28,7 +27,14 @@ export default function Authenticated({
         route: route("profile.get"),
     });
 
+    const { data: notifData } = useApi({
+        key: "notifications.unread",
+        route: route("notifications.getUnread"),
+    });
+
     const profile: User = data ?? {};
+    const notificationsGet: Notification[] = notifData ?? [];
+    const unReadNotif = notificationsGet.length;
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -161,7 +167,7 @@ export default function Authenticated({
 
             <main className="p-4 h-screen">{children}</main>
 
-            <footer className="bg-commons shadow rounded-full mx-7 sticky bottom-5 z-auto">
+            <footer className="bg-commons shadow rounded-full mx-7 sticky bottom-5 z-99">
                 <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 grid justify-items-center items-center grid-cols-4 gap-4 text-xl text-white">
                     <NavIcon
                         path={route("dashboard")}
@@ -173,11 +179,14 @@ export default function Authenticated({
                         icon={faAward}
                         active={route().current("rewards.*")}
                     />
-                    <NavIcon
-                        path={route("notifications.index")}
-                        icon={faBell}
-                        active={route().current("notifications.*")}
-                    />
+                    <div className="">
+                        <NavIcon
+                            path={route("notifications.index")}
+                            icon={faBell}
+                            active={route().current("notifications.*")}
+                            notif={unReadNotif}
+                        />
+                    </div>
                     <NavIcon
                         path={route("profile.edit")}
                         icon={faUserCircle}

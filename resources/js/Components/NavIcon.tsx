@@ -1,29 +1,31 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@inertiajs/react";
-import { ReactElement, useEffect } from "react";
+import { Badge } from "@mui/material";
+import { useEffect } from "react";
 
 interface NavIconProps {
     path: string;
     active: boolean;
     icon: IconProp;
+    notif?: number;
 }
 
-export default function NavIcon({
-    path,
-    active,
-    icon,
-}: NavIconProps): ReactElement {
+export default function NavIcon({ path, active, icon, notif }: NavIconProps) {
     useEffect(() => {}, [active]);
 
     return (
         <Link href={path}>
             {active ? (
                 <div className="bg-white w-10 h-10 rounded-full grid justify-items-center items-center">
-                    <FontAwesomeIcon icon={icon} className="text-commons" />
+                    <Badge badgeContent={notif} color="error" showZero={false}>
+                        <FontAwesomeIcon icon={icon} className="text-commons" />
+                    </Badge>
                 </div>
             ) : (
-                <FontAwesomeIcon icon={icon} />
+                <Badge badgeContent={notif} color="error" showZero={false}>
+                    <FontAwesomeIcon icon={icon} />
+                </Badge>
             )}
         </Link>
     );

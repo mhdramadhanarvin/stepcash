@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/notifications/getData', [NotificationController::class, 'getData'])->name('notifications.get');
+    Route::get('/notifications/getDataUnread', [NotificationController::class, 'getDataUnread'])->name('notifications.getUnread');
     Route::post('/notifications/setRead/{id}', [NotificationController::class, 'setRead'])->name('notifications.setRead');
     Route::post('/notifications/setReadAll', [NotificationController::class, 'setReadAll'])->name('notifications.setReadAll');
     Route::resource('notifications', NotificationController::class);

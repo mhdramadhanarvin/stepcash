@@ -27,9 +27,21 @@ class NotificationController extends Controller
             ['user_id', '=', Auth::id()]
         ]);
         $repo->setPerPage(5);
-        $notiofications = $repo->getAll();
+        $notifications = $repo->getAll();
 
-        return response()->json($notiofications);
+        return response()->json($notifications);
+    }
+
+    public function getDataUnread()
+    {
+        $repo = $this->notificationRepository;
+        $repo->setWhereArg([
+            ['user_id', '=', Auth::id()],
+            ['is_read', '=', false]
+        ]);
+        $notifications = $repo->getAll();
+
+        return response()->json(['data' => $notifications]);
     }
 
     public function setRead(int $id)

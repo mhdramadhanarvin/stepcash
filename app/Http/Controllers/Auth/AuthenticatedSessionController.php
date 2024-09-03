@@ -122,6 +122,7 @@ class AuthenticatedSessionController extends Controller
                     'email' => $userAuth->email,
                     'password' => password_hash('', PASSWORD_BCRYPT),
                     'google_id' => $userAuth->id,
+                    'email_verified_at' => now()
                 ]);
 
                 $this->tokenRepository->create($user, [

@@ -15,15 +15,15 @@ class NotificationSeeder extends Seeder
      */
     public function run(): void
     {
-        Notification::factory()->count(10)->for(User::find(2))->create();
+        Notification::factory()->count(10)->for(User::find(3))->create();
         sleep(10);
-        Notification::factory()->count(10)->for(User::find(2))->create();
+        Notification::factory()->count(10)->for(User::find(3))->create();
         sleep(10);
-        Notification::factory()->count(10)->for(User::find(2))->create();
+        Notification::factory()->count(10)->for(User::find(3))->create();
         sleep(10);
-        Notification::factory()->count(10)->for(User::find(2))->create();
+        Notification::factory()->count(10)->for(User::find(3))->create();
         sleep(10);
-        Notification::factory()->count(10)->for(User::find(2))->create();
-        StepActivity::factory()->count(10)->for(User::find(2))->create();
+        Notification::factory()->count(10)->for(User::find(3))->create();
+        StepActivity::factory()->count(10)->for(User::find(3))->create();
     }
 }

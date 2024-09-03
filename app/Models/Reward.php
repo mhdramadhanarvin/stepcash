@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RewardEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,10 @@ class Reward extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'status' => RewardEnum::class,
+    ];
 
     protected function thumbnail(): Attribute
     {

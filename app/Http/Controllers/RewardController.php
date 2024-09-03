@@ -131,4 +131,6 @@ class RewardController extends Controller
 
         return response()->json($rewards);
     }
+
+
 }

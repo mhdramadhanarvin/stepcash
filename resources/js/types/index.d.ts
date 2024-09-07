@@ -33,18 +33,18 @@ export enum PartnerSector {
     OTHER = "other",
 }
 
-export enum RewardClaimStatus {
-    WAITING_CONFIRMATION = "waiting_confirmation",
-    ON_PROGRESS = "on_progress",
-    READY_TO_PICKUP = "ready_to_pickup",
-    DONE = "done",
-    REJECTED = "rejected",
-}
+export type RewardClaimStatus =
+    | "waiting_confirmation"
+    | "on_progress"
+    | "ready_to_pickup"
+    | "done"
+    | "rejected";
 
 export interface Partner {
     id: number;
     user: User;
     name: string;
+    address: string;
     sector: PartnerSector;
 }
 
@@ -62,6 +62,7 @@ export interface RewardClaims {
     id: number;
     reward: Rewards;
     user: User;
+    code: string;
     price: number;
     status: RewardClaimStatus;
     reason_rejection: string;
@@ -70,9 +71,16 @@ export interface RewardClaims {
 
 export interface Notification {
     id: number;
-    user: User;
-    title: string;
-    message: string;
-    is_read: boolean;
+    notifiable_id: User;
+    data: {
+        title: string;
+        body: string;
+        actions?: [
+            {
+                url?: string;
+            },
+        ];
+    };
+    read_at: Date;
     created_at: Date;
 }

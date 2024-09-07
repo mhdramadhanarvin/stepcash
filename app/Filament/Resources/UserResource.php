@@ -4,11 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\CoinRate;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,19 +33,30 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')->label('Nama'),
+                TextColumn::make('email')->label('Email'),
+                TextColumn::make('coin')
+                    ->label('Jumlah Koin')
+                    ->numeric()
+                    ->suffix(function (TextColumn $column): ?string {
+                        $coinRate = CoinRate::find(1);
+                        $state = $column->getState();
+
+                        return ' Coin ~= Rp. ' . $state * ($coinRate->rupiah / $coinRate->coin);
+                    }),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                /*Tables\Actions\EditAction::make(),*/
+                /*Tables\Actions\DeleteAction::make(),*/
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                /*Tables\Actions\BulkActionGroup::make([*/
+                /*    Tables\Actions\DeleteBulkAction::make(),*/
+                /*]),*/
             ]);
     }
 
@@ -52,5 +65,10 @@ class UserResource extends Resource
         return [
             'index' => Pages\ManageUsers::route('/'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

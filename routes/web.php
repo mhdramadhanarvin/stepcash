@@ -16,7 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sync', [DashboardController::class, 'sync'])->name('dashboard.sync');
     Route::get('/rewards/getData', [RewardController::class, 'getData'])->name('rewards.get');
     Route::post('/rewards/exchange/{id}', [RewardController::class, 'exchange'])->name('rewards.exchange');
-    Route::get('/rewards/claims', [RewardController::class, 'claimsAll'])->name('rewards.claims.index');
+    Route::get('/rewards/claims/{id?}', [RewardController::class, 'claimsAll'])->name('rewards.claims.index');
     Route::get('/rewards/claimAll', [RewardController::class, 'getDataClaims'])->name('rewards.claims.all');
     Route::get('/rewards/show/{id}', [RewardController::class, 'showGetData'])->name('rewards.show.get');
     Route::resource('rewards', RewardController::class);

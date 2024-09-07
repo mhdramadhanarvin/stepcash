@@ -6,11 +6,13 @@ use App\Enums\RewardEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reward extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $guarded = [];
 
@@ -18,15 +20,13 @@ class Reward extends Model
         'status' => RewardEnum::class,
     ];
 
-    protected function thumbnail(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => asset('storage/' . $value),
-        );
-    }
-
     public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class);
+    }
+
+    public function rewardClaims(): HasMany
+    {
+        return $this->hasMany(Reward::class);
     }
 }

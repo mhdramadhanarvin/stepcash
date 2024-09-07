@@ -21,6 +21,7 @@
 
 <body class="font-sans antialiased">
     @inertia
+    @livewire('notifications')
 </body>
 
 </html>

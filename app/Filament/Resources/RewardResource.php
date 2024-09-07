@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RewardEnum;
 use App\Filament\Resources\RewardResource\Pages;
 use App\Filament\Resources\RewardResource\RelationManagers;
 use App\Models\CoinRate;
@@ -11,6 +12,7 @@ use App\Repositories\CoinRateRepositoryInterface;
 use App\Repositories\RewardRepositoryInterface;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -61,32 +63,47 @@ class RewardResource extends Resource
                     ->label('Nama Produk')
                     ->required(),
                 TextInput::make('quantity')
+                    ->label('Stok')
                     ->numeric()
                     ->required(),
                 Textarea::make('description')
+                    ->label('Deskripsi')
                     ->required(),
                 TextInput::make('price')
+                    ->label('Harga')
                     ->numeric()
                     ->helperText('1 coin ~= Rp. ' . $coinRate->rupiah / $coinRate->coin)
                     ->required(),
                 FileUpload::make('thumbnail')
+                    ->label('Thumbnail')
                     ->image()
                     ->imageEditor()
                     ->imageResizeMode('cover')
                     ->imageCropAspectRatio('1:1')
                     ->required(),
-                Hidden::make('partner_id')->default($user->partner->id)
+                Select::make('status')
+                    ->options(RewardEnum::class)
+                    ->hidden($user->hasRole('partner')),
+                Hidden::make('partner_id')
+                    ->default(fn ($record) => $user->partner->id ?? $record->partner_id)
             ]);
     }
 
     public static function table(Table $table): Table
     {
         $user = User::find(Auth::id());
+        $isLocked = false;
+        if ($user->hasRole('partner')) {
+            $isLocked =  $user->partner->is_active == false;
+        }
         return $table
             ->columns([
-                TextColumn::make('title')->label('Nama Produk'),
-                TextColumn::make('quantity')->numeric(),
+                TextColumn::make('title')->label('Nama Produk')->searchable(),
+                TextColumn::make('quantity')
+                    ->label('Stok')
+                    ->numeric(),
                 TextColumn::make('price')
+                    ->label('Harga')
                     ->suffix(function (TextColumn $column): ?string {
                         $coinRate = CoinRate::find(1);
                         $state = $column->getState();
@@ -100,12 +117,18 @@ class RewardResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->icon(!$user->partner->is_active ? 'heroicon-s-lock-closed' : '')->disabled(!$user->partner->is_active),
-                Tables\Actions\DeleteAction::make()->icon(!$user->partner->is_active ? 'heroicon-s-lock-closed' : '')->disabled(!$user->partner->is_active),
+                Tables\Actions\EditAction::make()
+                    ->icon($isLocked ? 'heroicon-s-lock-closed' : '')
+                    ->disabled($isLocked),
+                /*Tables\Actions\DeleteAction::make()*/
+                /*    ->icon(fn ($record) => $isLocked || $record->status != RewardEnum::WaitingApproving ? 'heroicon-s-lock-closed' : '')*/
+                /*    ->disabled(fn ($record) => $isLocked || $record->status != RewardEnum::WaitingApproving),*/
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->icon(!$user->partner->is_active ? 'heroicon-s-lock-closed' : '')->disabled(!$user->partner->is_active),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon($isLocked ? 'heroicon-s-lock-closed' : '')
+                        ->disabled($isLocked),
                 ]),
             ]);
     }
@@ -121,8 +144,19 @@ class RewardResource extends Resource
     {
         $user = User::find(Auth::id());
         if ($user->hasRole('partner')) {
-            return parent::getEloquentQuery()->where('partner_id', $user->partner->id);
+            return parent::getEloquentQuery()
+                ->where('partner_id', $user->partner->id)->latest();
         }
-        return parent::getEloquentQuery();
+        return parent::getEloquentQuery()->latest();
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', RewardEnum::WaitingApproving)->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getNavigationBadge() > 0 ? 'danger' : 'primary';
     }
 }

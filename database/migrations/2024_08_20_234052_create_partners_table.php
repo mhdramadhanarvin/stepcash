@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name', 100)->unique();
+            $table->string('address');
             $table->enum('sector', ['food_and_bevarage', 'sports', 'other']);
             $table->boolean('is_active')->default(false);
             $table->timestamps();

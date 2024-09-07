@@ -17,7 +17,7 @@ enum RewardClaimEnum: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::WAITING_CONFIRMATION => 'warning',
-            self::ON_PROGRESS => 'primary',
+            self::ON_PROGRESS => 'secondary',
             self::READY_TO_PICKUP => 'success',
             self::DONE => 'secondary',
             self::REJECTED => 'danger',
@@ -27,7 +27,7 @@ enum RewardClaimEnum: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::WAITING_CONFIRMATION => 'Menunggu Konfirmasi',
+            self::WAITING_CONFIRMATION => 'MENUNGGU KONFIRMASI',
             self::ON_PROGRESS => 'SEDANG DIPROSES',
             self::READY_TO_PICKUP => 'SIAP DIAMBIL',
             self::DONE => 'SELESAI',

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\NotificationEnum;
 use App\Exceptions\InvalidExchangeRewardException;
+use App\Models\Reward;
+use App\Notifications\ExchangeRewardProcess;
 use App\Repositories\CoinHistoryRepositoryInterface;
 use App\Repositories\NotificationRepositoryInterface;
 use App\Repositories\RewardClaimRepositoryInterface;
@@ -54,8 +56,12 @@ class RewardController extends Controller
         $repo->setWithRelation(['partner']);
         $repo->setPerPage(5);
         $rewards = $repo->getAll();
+        $transform = $rewards->setCollection($rewards->getCollection()->transform(function ($reward) {
+            $reward->thumbnail = asset('storage/' . $reward->thumbnail);
+            return $reward;
+        }));
 
-        return response()->json($rewards);
+        return response()->json($transform);
     }
 
     public function exchange(string $id)
@@ -79,12 +85,14 @@ class RewardController extends Controller
                 'type' => 'cut',
                 'description' => 'Penukaran ' . $reward->price . ' coin dengan produk ' . $reward->title
             ]);
-            $this->rewardClaimRepository->create($reward, $user, []);
-            $this->rewardRepository->decreaseQuantity($reward->id);
-            $this->notificationRepository->create($reward->partner->user, [
-                'title' => NotificationEnum::NEW_EXCHANGE,
-                'message' => 'Penukaran baru pada produk ' . $reward->title . ' senilai ' .$reward->price
+            $this->rewardClaimRepository->create($reward, $user, [
+                'code' => fake()->regexify('[A-Z]{5}[0-4]{3}')
             ]);
+            $this->rewardRepository->decreaseQuantity($reward->id);
+            $reward->partner->user->notify(new ExchangeRewardProcess(
+                NotificationEnum::getValue('NEW_EXCHANGE'),
+                'Penukaran baru pada produk ' . $reward->title . ' senilai ' . $reward->price . ' coin'
+            ));
 
             DB::commit();
             return response()->json(['status' => true, 'message' => 'Berhasil']);
@@ -109,13 +117,16 @@ class RewardController extends Controller
     {
         $repo = $this->rewardRepository;
         $repo->setWithRelation(['partner']);
-        return response()->json(['data' => $repo->getById($id)]);
+        $data = $repo->getById($id);
+        $data->thumbnail = asset('storage/' . $data->thumbnail);
+        return response()->json(['data' => $data]);
     }
 
-    public function claimsAll()
+    public function claimsAll($id = null)
     {
         return Inertia::render('Rewards/History', [
-            'rewards' => $this->getDataClaims()
+            'rewards' => $this->getDataClaims(),
+            'detail' => $id == null ? '' : $this->getDataClaimById($id)
         ]);
     }
 
@@ -125,12 +136,28 @@ class RewardController extends Controller
         $repo->setWhereArg([
             ['user_id', '=', Auth::id()]
         ]);
-        $repo->setWithRelation(['reward', 'user']);
+        $repo->setWithRelation(['reward.partner', 'user']);
         $repo->setPerPage(5);
-        $rewards = $repo->getAll();
+        $rewardClaims = $repo->getAll();
+        $transform = $rewardClaims->through(function ($data) {
+            $reward = $this->rewardRepository->getById($data->reward->id);
+            $thumbnail = $reward ? $reward->thumbnail : null;
 
-        return response()->json($rewards);
+            $thumbnailUrl = $thumbnail ? asset('storage/' . $thumbnail) : null;
+            $data->reward->thumbnail = $thumbnailUrl;
+            return $data;
+        });
+
+        return response()->json($transform);
     }
 
+    public function getDataClaimById($id)
+    {
+        $repo = $this->rewardClaimRepository;
+        $repo->setWithRelation(['reward.partner', 'user']);
+        $rewardClaims = $repo->getById($id);
+        $rewardClaims->reward->thumbnail = asset('storage/' . $rewardClaims->reward->thumbnail);
 
+        return $rewardClaims;
+    }
 }

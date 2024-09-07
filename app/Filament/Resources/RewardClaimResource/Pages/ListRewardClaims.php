@@ -4,9 +4,9 @@ namespace App\Filament\Resources\RewardClaimResource\Pages;
 
 use App\Filament\Resources\RewardClaimResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\ListRecords;
 
-class ManageRewardClaims extends ManageRecords
+class ListRewardClaims extends ListRecords
 {
     protected static string $resource = RewardClaimResource::class;
 

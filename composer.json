@@ -8,6 +8,7 @@
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
+        "filament/notifications": "^3.2",
         "google/apiclient": "^2.15.0",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.9",

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Notification;
+use App\Models\Reward;
+use App\Models\RewardClaim;
 use App\Models\StepActivity;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,15 +17,16 @@ class NotificationSeeder extends Seeder
      */
     public function run(): void
     {
-        Notification::factory()->count(10)->for(User::find(3))->create();
-        sleep(10);
-        Notification::factory()->count(10)->for(User::find(3))->create();
-        sleep(10);
-        Notification::factory()->count(10)->for(User::find(3))->create();
-        sleep(10);
-        Notification::factory()->count(10)->for(User::find(3))->create();
-        sleep(10);
-        Notification::factory()->count(10)->for(User::find(3))->create();
+        /*Notification::factory()->count(10)->for(User::find(3))->create();*/
+        /*sleep(10);*/
+        /*Notification::factory()->count(10)->for(User::find(3))->create();*/
+        /*sleep(10);*/
+        /*Notification::factory()->count(10)->for(User::find(3))->create();*/
+        /*sleep(10);*/
+        /*Notification::factory()->count(10)->for(User::find(3))->create();*/
+        /*sleep(10);*/
+        /*Notification::factory()->count(10)->for(User::find(3))->create();*/
         StepActivity::factory()->count(10)->for(User::find(3))->create();
+        RewardClaim::factory()->count(10)->for(User::find(3))->for(Reward::find(1))->create();
     }
 }

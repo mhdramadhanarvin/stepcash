@@ -20,6 +20,7 @@ class Partner extends Model
         'user_id',
         'name',
         'sector',
+        'address',
         'is_active',
     ];
 

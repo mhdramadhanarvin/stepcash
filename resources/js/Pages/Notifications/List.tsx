@@ -3,7 +3,7 @@ import { Notification, PageProps } from "@/types";
 import { useApi } from "@/utils/useApi";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -94,60 +94,72 @@ export default function List({ auth }: PageProps) {
                     </div>
                 )}
                 {notifications.map((data: Notification, key: number) => (
-                    <Card
+                    <Link
+                        href={
+                            data.data.actions &&
+                            data.data.actions.length > 0 &&
+                            data.data.actions[0]?.url
+                                ? data.data.actions[0].url
+                                : "#javascript"
+                        }
+                        preserveState
                         key={key}
-                        orientation="horizontal"
-                        variant="outlined"
                         onClick={() => handleSingleRead(data.id)}
-                        sx={{
-                            width: "100%",
-                            marginY: 0.8,
-                            bgcolor: data.is_read ? "" : primary,
-                        }}
                     >
-                        <CardOverflow>
-                            <AspectRatio
-                                ratio="1"
-                                sx={{
-                                    width: 35,
-                                    alignContent: "center",
-                                    marginLeft: "1em",
-                                    bgcolor: data.is_read ? "" : primary,
-                                }}
-                            >
-                                <div className="rounded-full bg-green-500 m-2">
-                                    <FontAwesomeIcon
-                                        icon={faBell}
-                                        className="text-white"
-                                    />
-                                </div>
-                            </AspectRatio>
-                        </CardOverflow>
-                        <CardContent>
-                            <div className="grid grid-cols-7">
-                                <div className="col-span-5">
+                        <Card
+                            orientation="horizontal"
+                            variant="outlined"
+                            sx={{
+                                width: "100%",
+                                marginY: 0.8,
+                                bgcolor: data.read_at != null ? "" : primary,
+                            }}
+                        >
+                            <CardOverflow>
+                                <AspectRatio
+                                    ratio="1"
+                                    sx={{
+                                        width: 35,
+                                        alignContent: "center",
+                                        marginLeft: "1em",
+                                        bgcolor:
+                                            data.read_at != null ? "" : primary,
+                                    }}
+                                >
+                                    <div className="rounded-full bg-green-500 m-2">
+                                        <FontAwesomeIcon
+                                            icon={faBell}
+                                            className="text-white"
+                                        />
+                                    </div>
+                                </AspectRatio>
+                            </CardOverflow>
+                            <CardContent>
+                                <div className="grid grid-cols-7">
+                                    <div className="col-span-5">
+                                        <Typography
+                                            level="title-sm"
+                                            fontWeight="md"
+                                            textColor="success.plainColor"
+                                        >
+                                            {data.data.title}
+                                        </Typography>
+                                    </div>
                                     <Typography
-                                        level="title-sm"
-                                        fontWeight="md"
-                                        textColor="success.plainColor"
+                                        level="body-xs"
+                                        sx={{ paddingLeft: 2 }}
                                     >
-                                        {data.title}
+                                        {new Date(
+                                            data.created_at,
+                                        ).toLocaleDateString("id-ID")}
                                     </Typography>
                                 </div>
-                                <Typography
-                                    level="body-xs"
-                                    sx={{ paddingLeft: 2 }}
-                                >
-                                    {new Date(
-                                        data.created_at,
-                                    ).toLocaleDateString("id-ID")}
+                                <Typography level="body-xs">
+                                    {data.data.body}
                                 </Typography>
-                            </div>
-                            <Typography level="body-xs">
-                                {data.message}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 ))}
                 <Box
                     width="100%"

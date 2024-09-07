@@ -18,6 +18,7 @@ class PartnerFactory extends Factory
     {
         return [
             'name' => fake()->company(),
+            'address' => fake()->address,
             'sector' => fake()->randomElement(['food_and_bevarage', 'sports', 'other']),
             'is_active' => true
         ];

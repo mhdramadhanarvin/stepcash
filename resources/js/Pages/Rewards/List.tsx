@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, Rewards } from "@/types";
+import { limitCharacter } from "@/utils/manipulation";
 import { useApi } from "@/utils/useApi";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,12 +23,6 @@ export default function List({ auth }: PageProps) {
 
     const handleChange = (e: ChangeEvent<unknown>, p: number) => {
         setPage(p);
-    };
-
-    const limitCharacter = (character: string): string => {
-        return character.length > 20
-            ? character.slice(0, 20) + "..."
-            : character;
     };
 
     useEffect(() => {

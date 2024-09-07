@@ -72,10 +72,10 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         return $this->hasOne(Partner::class);
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
+    /*public function notifications(): HasMany*/
+    /*{*/
+    /*    return $this->hasMany(Notification::class);*/
+    /*}*/
 
     public function canAccessPanel(Panel $panel): bool
     {

@@ -10,7 +10,6 @@ use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TokenRepositoryInterface;
 use App\Repositories\CoinHistoryRepositoryInterface;
 use App\Repositories\CoinRateRepositoryInterface;
-use App\Repositories\NotificationRepositoryInterface;
 use App\Repositories\StepActivityRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
@@ -30,7 +29,6 @@ class ConvertStepsToCoin extends Command
     protected $coinHistoryRepository;
     protected $coinRateRepository;
     protected $userRepository;
-    protected $notificationRepository;
     protected $googleApiService;
 
     /**
@@ -43,7 +41,6 @@ class ConvertStepsToCoin extends Command
         UserRepositoryInterface $userRepository,
         CoinHistoryRepositoryInterface $coinHistoryRepository,
         CoinRateRepositoryInterface $coinRateRepository,
-        NotificationRepositoryInterface $notificationRepository,
         GoogleApiService $googleApiService,
     ) {
         parent::__construct();
@@ -52,7 +49,6 @@ class ConvertStepsToCoin extends Command
         $this->coinHistoryRepository = $coinHistoryRepository;
         $this->coinRateRepository = $coinRateRepository;
         $this->userRepository = $userRepository;
-        $this->notificationRepository = $notificationRepository;
         $this->googleApiService = $googleApiService;
     }
 

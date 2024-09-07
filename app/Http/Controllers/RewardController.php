@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\NotificationEnum;
 use App\Exceptions\InvalidExchangeRewardException;
-use App\Models\Reward;
 use App\Notifications\ExchangeRewardProcess;
 use App\Repositories\CoinHistoryRepositoryInterface;
-use App\Repositories\NotificationRepositoryInterface;
 use App\Repositories\RewardClaimRepositoryInterface;
 use App\Repositories\RewardRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
@@ -22,20 +20,17 @@ class RewardController extends Controller
     protected $coinHistoryRepository;
     protected $rewardRepository;
     protected $rewardClaimRepository;
-    protected $notificationRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         CoinHistoryRepositoryInterface $coinHistoryRepository,
         RewardRepositoryInterface $rewardRepository,
         RewardClaimRepositoryInterface $rewardClaimRepository,
-        NotificationRepositoryInterface $notificationRepository,
     ) {
         $this->userRepository = $userRepository;
         $this->coinHistoryRepository = $coinHistoryRepository;
         $this->rewardRepository = $rewardRepository;
         $this->rewardClaimRepository = $rewardClaimRepository;
-        $this->notificationRepository = $notificationRepository;
     }
     /**
      * Display a listing of the resource.

@@ -16,7 +16,7 @@ enum RewardEnum: string implements HasColor, HasLabel
         return match ($this) {
             self::Publish => 'success',
             self::WaitingApproving => 'warning',
-            self::Draft => 'warning',
+            self::Draft => 'danger',
         };
     }
 

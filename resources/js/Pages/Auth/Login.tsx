@@ -18,7 +18,7 @@ export default function Login({ status }: { status: string }) {
     return (
         <>
             {splashScreen ? (
-                <div className="bg-cover bg-[url('/images/splash-screen.png')] min-w-screen min-h-screen">
+                <div className="bg-cover bg-[url('@images/splash-screen.png')] min-w-screen min-h-screen">
                     <div className="fixed top-20 left-0 text-white px-8 w-full">
                         <h1 className="font-bold text-3xl">StepCash</h1>
                         <span className="text-xl">
@@ -31,7 +31,7 @@ export default function Login({ status }: { status: string }) {
                                 Pastikan telah memasang aplikasi Google Fit
                             </div>
                             <button
-                                className="sticky buttom-5 bg-white rounded-full w-60 py-4 px-16 text-xl font-bold text-commons"
+                                className="sticky buttom-5 bg-white rounded-full w-60 py-4 px-14 text-xl font-semibold text-commons"
                                 onClick={handleSplashScreen}
                             >
                                 Get Started

@@ -68,7 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('3s');
+            ->databaseNotificationsPolling('1s');
     }
 
     public function boot()

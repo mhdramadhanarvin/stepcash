@@ -16,12 +16,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
@@ -119,7 +122,33 @@ class RewardResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->icon($isLocked ? 'heroicon-s-lock-closed' : '')
-                    ->disabled($isLocked),
+                    ->disabled($isLocked)
+                    ->before(function (Model $record, array $data) {
+                        // Runs after the form fields are saved to the database.
+                        if ($record->status == RewardEnum::WaitingApproving && $data['status'] == 'publish') {
+                            Notification::make()
+                                ->success()
+                                ->title('Penambahan Produk Disetujui')
+                                ->body('Produk yang kamu tambahan sudah disetujui admin, sekarang produk kamu sudah tampil di halaman hadiah pengguna')
+                                ->actions([
+                                    Action::make('lihat')
+                                        ->button()
+                                        ->url(RewardResource::getUrl('index')),
+                                ])
+                                ->sendToDatabase($record->partner->user);
+                        } elseif ($record->status == RewardEnum::WaitingApproving && $data['status'] == 'draft') {
+                            Notification::make()
+                                ->danger()
+                                ->title('Penambahan Produk Ditolak')
+                                ->body('Produk yang kamu tambahkan ditolak, silahkan tambahkan produk lain')
+                                ->actions([
+                                    Action::make('lihat')
+                                        ->button()
+                                        ->url(RewardResource::getUrl('index')),
+                                ])
+                                ->sendToDatabase($record->partner->user);
+                        }
+                    })
                 /*Tables\Actions\DeleteAction::make()*/
                 /*    ->icon(fn ($record) => $isLocked || $record->status != RewardEnum::WaitingApproving ? 'heroicon-s-lock-closed' : '')*/
                 /*    ->disabled(fn ($record) => $isLocked || $record->status != RewardEnum::WaitingApproving),*/

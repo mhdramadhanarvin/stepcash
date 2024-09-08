@@ -26,6 +26,7 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Actions\Action as ActionInfolist;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
+use Filament\Tables\Columns\ImageColumn;
 
 class RewardClaimResource extends Resource
 {
@@ -57,6 +58,7 @@ class RewardClaimResource extends Resource
             ->columns([
                 TextColumn::make('created_at')->label('Tanggal Penukaran')->dateTime("d M Y H:i:s"),
                 TextColumn::make('code')->label('Kode Penukaran')->searchable(),
+                ImageColumn::make('reward.thumbnail')->label('Thumbnail'),
                 TextColumn::make('reward.title')->label('Nama Produk')->searchable(),
                 TextColumn::make('price')
                     ->label('Harga')
@@ -201,5 +203,10 @@ class RewardClaimResource extends Resource
             $query = parent::getEloquentQuery();
         }
         return $query->latest();
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', RewardClaimEnum::WAITING_CONFIRMATION)->count();
     }
 }

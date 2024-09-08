@@ -24,7 +24,7 @@ class NotificationController extends Controller
     public function getData()
     {
         $user = User::find(Auth::id());
-        $notifications = $user->notifications()->paginate(5);
+        $notifications = $user->notifications()->latest()->paginate(5);
 
         return response()->json($notifications);
     }

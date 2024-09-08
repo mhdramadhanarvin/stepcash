@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\NotificationEnum;
 use App\Exceptions\InvalidExchangeRewardException;
+use App\Filament\Resources\RewardClaimResource;
 use App\Notifications\ExchangeRewardProcess;
 use App\Repositories\CoinHistoryRepositoryInterface;
 use App\Repositories\RewardClaimRepositoryInterface;
@@ -80,13 +81,14 @@ class RewardController extends Controller
                 'type' => 'cut',
                 'description' => 'Penukaran ' . $reward->price . ' coin dengan produk ' . $reward->title
             ]);
-            $this->rewardClaimRepository->create($reward, $user, [
+            $rewardClaim = $this->rewardClaimRepository->create($reward, $user, [
                 'code' => fake()->regexify('[A-Z]{5}[0-4]{3}')
             ]);
             $this->rewardRepository->decreaseQuantity($reward->id);
             $reward->partner->user->notify(new ExchangeRewardProcess(
                 NotificationEnum::getValue('NEW_EXCHANGE'),
-                'Penukaran baru pada produk ' . $reward->title . ' senilai ' . $reward->price . ' coin'
+                'Penukaran baru pada produk ' . $reward->title . ' senilai ' . $reward->price . ' coin',
+                RewardClaimResource::getUrl('view', [$rewardClaim->id])
             ));
 
             DB::commit();

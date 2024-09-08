@@ -26,7 +26,10 @@ export default function Login({ status }: { status: string }) {
                         </span>
                     </div>
                     <div className="flex justify-center items-center text-center">
-                        <div className="fixed bottom-20">
+                        <div className="fixed bottom-16">
+                            <div className="text-white py-3">
+                                Pastikan telah memasang aplikasi Google Fit
+                            </div>
                             <button
                                 className="sticky buttom-5 bg-white rounded-full w-60 py-4 px-16 text-xl font-bold text-commons"
                                 onClick={handleSplashScreen}

@@ -13,7 +13,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+                serif: ["Poppins", ...defaultTheme.fontFamily.serif],
+                mono: ["Poppins", ...defaultTheme.fontFamily.mono],
             },
             colors: {
                 commons: "#00AA5B",

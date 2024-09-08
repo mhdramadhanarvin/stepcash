@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->double('price');
+            $table->string('code');
             $table->enum('status', ['waiting_confirmation', 'on_progress', 'ready_to_pickup', 'done', 'rejected'])->default('waiting_confirmation');
             $table->string('reason_rejection')->nullable();
             $table->timestamps();

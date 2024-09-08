@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->string('thumbnail');
             $table->enum('status', ['waiting_approving', 'draft', 'publish']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

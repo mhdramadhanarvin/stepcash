@@ -1,9 +1,15 @@
+import { Badge } from "@/Components/Badge";
+import { ModalDetailHistoryClaim } from "@/Components/Modals/ModalDetailHistoryClaim";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, RewardClaims } from "@/types";
+import {
+    RewardClaimStatusLabel,
+    RewardClaimStatusLabelColor,
+} from "@/utils/manipulation";
 import { useApi } from "@/utils/useApi";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -12,8 +18,12 @@ import Typography from "@mui/joy/Typography";
 import { Box, Pagination } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 
-export default function History({ auth }: PageProps) {
+export default function History({
+    auth,
+    detail,
+}: PageProps<{ detail: RewardClaims | null }>) {
     const [page, setPage] = useState<number>(1);
+    const [showDetail, setShowDetail] = useState<RewardClaims>();
     const { data, pagination, refetch } = useApi({
         key: "rewards.claims",
         route: route("rewards.claims.all"),
@@ -24,20 +34,36 @@ export default function History({ auth }: PageProps) {
         setPage(p);
     };
 
-    const limitCharacter = (character: string): string => {
-        return character.length > 20
-            ? character.slice(0, 20) + "..."
+    const limitCharacter = (character: string, limit?: number): string => {
+        const limitChar: number = limit ?? 20;
+        return character.length > limitChar
+            ? character.slice(0, limitChar) + "..."
             : character;
+    };
+
+    const handleCloseModal = () => {
+        setShowDetail(undefined);
+        if (route().params.id !== undefined)
+            router.visit(route("rewards.claims.index"));
     };
 
     useEffect(() => {
         refetch();
+        if (detail) {
+            setShowDetail(detail);
+        }
     }, [page, refetch]);
 
     const rewardClaims: RewardClaims[] = data ?? [];
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="History Claim Reward" />
+            <ModalDetailHistoryClaim
+                open={showDetail !== undefined}
+                handleClose={handleCloseModal}
+                data={showDetail}
+            />
             <Link href={route("rewards.index")}>
                 <button className="p-3">
                     <FontAwesomeIcon icon={faChevronLeft} />
@@ -58,6 +84,7 @@ export default function History({ auth }: PageProps) {
                         variant="outlined"
                         key={key}
                         sx={{ width: "100%", marginY: 0.8, padding: 1 }}
+                        onClick={() => setShowDetail(data)}
                     >
                         <CardOverflow>
                             <AspectRatio ratio="1" sx={{ width: 90 }}>
@@ -83,11 +110,12 @@ export default function History({ auth }: PageProps) {
                                     "id-ID",
                                 )}
                             </Typography>
-                            <Typography level="body-sm">
-                                <span className="inline-flex font-bold items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
-                                    Menunggu Konfirmasi
-                                </span>
-                            </Typography>
+                            <Badge
+                                variant={
+                                    RewardClaimStatusLabelColor[data.status]
+                                }
+                                label={RewardClaimStatusLabel[data.status]}
+                            />
                         </CardContent>
                         <CardOverflow
                             variant="soft"

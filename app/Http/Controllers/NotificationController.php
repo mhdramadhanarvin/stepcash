@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\NotificationRepositoryInterface;
+use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
-    protected $notificationRepository;
+    protected $userRepository;
 
-    public function __construct(NotificationRepositoryInterface $notificationRepository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->notificationRepository  = $notificationRepository;
+        $this->userRepository = $userRepository->getById(Auth::id());
     }
 
     public function index()
@@ -22,41 +23,27 @@ class NotificationController extends Controller
 
     public function getData()
     {
-        $repo = $this->notificationRepository;
-        $repo->setWhereArg([
-            ['user_id', '=', Auth::id()]
-        ]);
-        $repo->setPerPage(5);
-        $notifications = $repo->getAll();
+        $user = User::find(Auth::id());
+        $notifications = $user->notifications()->latest()->paginate(5);
 
         return response()->json($notifications);
     }
 
     public function getDataUnread()
     {
-        $repo = $this->notificationRepository;
-        $repo->setWhereArg([
-            ['user_id', '=', Auth::id()],
-            ['is_read', '=', false]
-        ]);
-        $notifications = $repo->getAll();
+        $repo = $this->userRepository->unreadNotifications;
 
-        return response()->json(['data' => $notifications]);
+        return response()->json(['data' => $repo]);
     }
 
-    public function setRead(int $id)
+    public function setRead(string $id)
     {
-        return $this->notificationRepository->update(['is_read' => true], $id);
+
+        return $this->userRepository->notifications->find($id)->markAsRead();
     }
 
     public function setReadAll()
     {
-        $notifications = $this->notificationRepository;
-        $notifications->setWhereArg([
-            ['user_id', '=', Auth::id()]
-        ]);
-        foreach ($notifications->getAll() as $notification) {
-            $this->notificationRepository->update(['is_read' => true], $notification->id);
-        }
+        return $this->userRepository->notifications->markAsRead();
     }
 }

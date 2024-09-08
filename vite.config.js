@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import laravel from "laravel-vite-plugin";
+import laravel, { refreshPaths } from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { VitePWA } from "vite-plugin-pwa";
@@ -7,8 +7,8 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
     plugins: [
         laravel({
-            input: "resources/js/app.tsx",
-            refresh: true,
+            input: ["resources/css/app.css", "resources/js/app.tsx"],
+            refresh: [...refreshPaths, "app/Livewire/**"],
         }),
         react(),
         VitePWA({

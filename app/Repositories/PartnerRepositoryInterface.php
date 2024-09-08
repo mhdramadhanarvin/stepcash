@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
+
 interface PartnerRepositoryInterface
 {
     public function getById($id);
 
     public function getAll();
 
-    public function create(object $object, array $data);
+    public function create(User $user, array $data);
 
     public function update(array $data, $id);
 

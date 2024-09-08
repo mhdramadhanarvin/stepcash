@@ -63,7 +63,7 @@ export default function Dashboard({ auth }: PageProps) {
                     <ThemeProvider theme={theme}>
                         <CircularProgress
                             variant="determinate"
-                            value={progress}
+                            value={progress ?? 0}
                             size={160}
                             thickness={2}
                             sx={{
@@ -75,7 +75,7 @@ export default function Dashboard({ auth }: PageProps) {
                 </div>
             </div>
             <h2 className="text-center text-3xl pt-5 font-semibold">
-                {step.step}
+                {step.step ?? 0}
             </h2>
             <h2 className="text-center text-lg py-2 font-semibold">
                 Goal: 7000 Langkah

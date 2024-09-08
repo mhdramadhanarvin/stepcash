@@ -56,7 +56,6 @@ class RewardClaimResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('created_at')->label('Tanggal Penukaran')->dateTime("d M Y H:i:s"),
                 TextColumn::make('code')->label('Kode Penukaran')->searchable(),
                 ImageColumn::make('reward.thumbnail')->label('Thumbnail'),
                 TextColumn::make('reward.title')->label('Nama Produk')->searchable(),
@@ -68,7 +67,8 @@ class RewardClaimResource extends Resource
 
                         return ' Coin ~= Rp. ' . $state * ($coinRate->rupiah / $coinRate->coin);
                     }),
-                TextColumn::make('status')->badge()
+                TextColumn::make('status')->badge(),
+                TextColumn::make('created_at')->label('Tanggal Penukaran')->dateTime("d M Y H:i:s"),
             ])
             ->filters([
                 //

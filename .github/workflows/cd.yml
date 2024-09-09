@@ -23,6 +23,9 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, redis
           coverage: none
 
+      - name: Copy credentials Google Api
+        run: echo "${{ secrets.GOOGLE_API_CRENDENTIALS }}" > ./storage/app/credentials.json
+
       - name: Run composer install
         run: composer install -n --prefer-dist -o
 

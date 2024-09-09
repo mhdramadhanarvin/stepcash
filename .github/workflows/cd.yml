@@ -24,7 +24,7 @@ jobs:
           coverage: none
 
       - name: Run composer install
-        run: composer install -n --prefer-dist --no-dev -o
+        run: composer install -n --prefer-dist -o
 
       - name: Use Node.js
         uses: actions/setup-node@v3

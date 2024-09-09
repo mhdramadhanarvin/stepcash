@@ -24,10 +24,14 @@ jobs:
           coverage: none
 
       - name: Copy credentials Google Api
+        env:
+          SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
         run: |
-          touch ./storage/app/credentials.json && \
-          echo "${{ secrets.GOOGLE_API_CRENDENTIALS }}" >> ./storage/app/credentials.json && \
-          cp .env.example .env
+          # touch ./storage/app/credentials.json && \
+          # echo "${{ secrets.GOOGLE_API_CRENDENTIALS }}" >> ./storage/app/credentials.json && \
+          cp .env.example .env && \
+          gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
+          --output ./storage/app/credentials.json credentials.json.gpg
 
       - name: Run composer install
         run: composer install -n --prefer-dist -o

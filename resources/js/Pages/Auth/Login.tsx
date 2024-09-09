@@ -18,12 +18,15 @@ export default function Login({ status }: { status: string }) {
     return (
         <>
             {splashScreen ? (
-                <div className="bg-cover bg-[url('@images/splash-screen.png')] min-w-screen min-h-screen">
-                    <div className="fixed top-20 left-0 text-white px-8 w-full">
-                        <h1 className="font-bold text-3xl">StepCash</h1>
-                        <span className="text-xl">
-                            Tukarkan langkahmu setiap hari dengan produk menarik
-                        </span>
+                <div className="md:bg-contain bg-cover bg-center bg-no-repeat bg-[url('@images/splash-screen.png')] min-w-screen min-h-screen">
+                    <div className="fixed top-20 left-auto md:left-0 text-white px-8 w-full grid flex justify-items-center">
+                        <div className="w-96">
+                            <h1 className="font-bold text-3xl">StepCash</h1>
+                            <h3 className="text-xl">
+                                Tukarkan langkahmu setiap hari dengan produk
+                                menarik
+                            </h3>
+                        </div>
                     </div>
                     <div className="flex justify-center items-center text-center">
                         <div className="fixed bottom-16">

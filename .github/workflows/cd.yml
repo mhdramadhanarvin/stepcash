@@ -24,7 +24,7 @@ jobs:
           coverage: none
 
       - name: Copy credentials Google Api
-        run: touch ./storage/app/credentials.json && echo "${{ secrets.GOOGLE_API_CRENDENTIALS }}" >> ./storage/app/credentials.json && cat /storage/app/credentials.json
+        run: touch ./storage/app/credentials.json && echo "${{ secrets.GOOGLE_API_CRENDENTIALS }}" >> ./storage/app/credentials.json && cat ./storage/app/credentials.json
 
       - name: Run composer install
         run: composer install -n --prefer-dist -o

@@ -24,7 +24,7 @@ jobs:
           coverage: none
 
       - name: Decrypt large secret
-        run: ./decrypt_secret.sh
+        run: cp .env.example .env && ./decrypt_secret.sh
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
 

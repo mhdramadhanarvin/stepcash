@@ -23,12 +23,10 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, redis
           coverage: none
 
-      - name: Copy credentials Google Api
+      - name: Decrypt large secret
+        run: ./decrypt_secret.sh
         env:
-          SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
-        run: |
-          cp .env.example .env && \
-          gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" --output ./storage/app/credentials.json credentials.json.gpg
+          LARGE_SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
 
       - name: Run composer install
         run: composer install -n --prefer-dist -o

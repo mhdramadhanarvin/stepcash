@@ -26,21 +26,38 @@ class PartnerResource extends Resource
 
     public static function getPluralLabel(): string
     {
-        return __('Toko');
+        $user = User::find(Auth::id());
+        if ($user->hasRole('partner')) {
+            $naming =  "Toko";
+        } else {
+            $naming = "Mitra";
+        }
+        return __($naming);
     }
 
     public static function getModelLabel(): string
     {
-        return __('Toko');
+        $user = User::find(Auth::id());
+        if ($user->hasRole('partner')) {
+            $naming =  "Toko";
+        } else {
+            $naming = "Mitra";
+        }
+        return __($naming);
     }
 
     public static function form(Form $form): Form
     {
         $user = User::find(Auth::id());
+        if ($user->hasRole('partner')) {
+            $naming =  "Toko";
+        } else {
+            $naming = "Mitra";
+        }
         return $form
             ->schema([
-                TextInput::make('name')->label('Nama Toko')->required(),
-                TextInput::make('address')->label('Alamat Toko')->required(),
+                TextInput::make('name')->label('Nama ' . $naming)->required(),
+                TextInput::make('address')->label('Alamat ' .$naming)->required(),
                 Select::make('sector')->label('Sektor')->options(PartnerEnum::class)->required(),
                 Select::make('is_active')
                     ->label('Status')
@@ -59,11 +76,14 @@ class PartnerResource extends Resource
         $isLocked = false;
         if ($user->hasRole('partner')) {
             $isLocked =  $user->partner->is_active;
+            $naming =  "Toko";
+        } else {
+            $naming = "Mitra";
         }
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nama Toko'),
-                TextColumn::make('address')->label('Alamat Toko')->limit(60),
+                TextColumn::make('name')->label('Nama ' . $naming),
+                TextColumn::make('address')->label('Alamat ' . $naming)->limit(60),
                 TextColumn::make('sector')->label('Sektor')->badge(),
                 TextColumn::make('is_active')
                     ->label('Status')

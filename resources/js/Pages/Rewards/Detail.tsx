@@ -3,6 +3,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, ResponseGlobal, Rewards } from "@/types";
+import { formatedBalance } from "@/utils/manipulation";
 import { useApi } from "@/utils/useApi";
 import {
     faChevronLeft,
@@ -116,7 +117,7 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
                 <div className="max-w-lg rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col mb-64">
                     <img
                         src={reward?.thumbnail}
-                        className="shadow rounded-lg overflow-hidden border object-cover h-48"
+                        className="shadow rounded-lg overflow-hidden border object-contain object-center h-48"
                     />
                     <div className="mt-8 px-1">
                         <div className="grid grid-cols-4">
@@ -132,7 +133,7 @@ export default function Detail({ auth, id }: PageProps<{ id: number }>) {
                             <div className="inline-flex">
                                 <CoinIcon />
                                 <span className="text-xl font-semibold">
-                                    {reward?.price}
+                                    {formatedBalance(reward?.price ?? 0)}
                                 </span>
                             </div>
                         </div>

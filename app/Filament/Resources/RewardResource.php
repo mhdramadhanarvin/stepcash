@@ -113,7 +113,7 @@ class RewardResource extends Resource
 
                         return ' Coin ~= Rp. ' . $state * ($coinRate->rupiah / $coinRate->coin);
                     }),
-                TextColumn::make('status')->badge(),
+                TextColumn::make('status')->badge()->sortable(),
                 ImageColumn::make('thumbnail'),
             ])
             ->filters([
@@ -125,28 +125,31 @@ class RewardResource extends Resource
                     ->disabled($isLocked)
                     ->before(function (Model $record, array $data) {
                         // Runs after the form fields are saved to the database.
-                        if ($record->status == RewardEnum::WaitingApproving && $data['status'] == 'publish') {
-                            Notification::make()
-                                ->success()
-                                ->title('Penambahan Produk Disetujui')
-                                ->body('Produk yang kamu tambahan sudah disetujui admin, sekarang produk kamu sudah tampil di halaman hadiah pengguna')
-                                ->actions([
-                                    Action::make('lihat')
-                                        ->button()
-                                        ->url(RewardResource::getUrl('index')),
-                                ])
-                                ->sendToDatabase($record->partner->user);
-                        } elseif ($record->status == RewardEnum::WaitingApproving && $data['status'] == 'draft') {
-                            Notification::make()
-                                ->danger()
-                                ->title('Penambahan Produk Ditolak')
-                                ->body('Produk yang kamu tambahkan ditolak, silahkan tambahkan produk lain')
-                                ->actions([
-                                    Action::make('lihat')
-                                        ->button()
-                                        ->url(RewardResource::getUrl('index')),
-                                ])
-                                ->sendToDatabase($record->partner->user);
+                        $user = User::find(Auth::id());
+                        if ($user->hasRole('super_admin')) {
+                            if ($record->status == RewardEnum::WaitingApproving && $data['status'] == 'publish') {
+                                Notification::make()
+                                    ->success()
+                                    ->title('Penambahan Produk Disetujui')
+                                    ->body('Produk yang kamu tambahan sudah disetujui admin, sekarang produk kamu sudah tampil di halaman hadiah pengguna')
+                                    ->actions([
+                                        Action::make('lihat')
+                                            ->button()
+                                            ->url(RewardResource::getUrl('index')),
+                                    ])
+                                    ->sendToDatabase($record->partner->user);
+                            } elseif ($record->status == RewardEnum::WaitingApproving && $data['status'] == 'draft') {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Penambahan Produk Ditolak')
+                                    ->body('Produk yang kamu tambahkan ditolak, silahkan tambahkan produk lain')
+                                    ->actions([
+                                        Action::make('lihat')
+                                            ->button()
+                                            ->url(RewardResource::getUrl('index')),
+                                    ])
+                                    ->sendToDatabase($record->partner->user);
+                            }
                         }
                     })
                 /*Tables\Actions\DeleteAction::make()*/

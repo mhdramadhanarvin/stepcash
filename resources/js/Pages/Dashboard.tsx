@@ -215,7 +215,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>{step.time_spent} min</span>
+                        <span>{step.time_spent ?? 0} min</span>
                     </div>
                 </div>
                 <div className="totalDistance">
@@ -226,7 +226,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>{step.distance} KM</span>
+                        <span>{step.distance ?? 0} KM</span>
                     </div>
                 </div>
                 <div className="totalCalory">
@@ -237,7 +237,7 @@ export default function Dashboard({ auth }: PageProps) {
                         />
                     </div>
                     <div className="py-2">
-                        <span>{step.calory} Cal</span>
+                        <span>{step.calory ?? 0} Cal</span>
                     </div>
                 </div>
             </div>

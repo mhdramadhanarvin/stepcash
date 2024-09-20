@@ -13,14 +13,14 @@ import {
 import NavIcon from "@/Components/NavIcon";
 import CoinIcon from "@/Components/CoinIcon";
 import { useApi } from "@/utils/useApi";
+import { formatedBalance } from "@/utils/manipulation";
 
 export default function Authenticated({
     user,
     header,
     children,
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const [showingNavigationDropdown] = useState(false);
 
     const { data } = useApi({
         key: "profile",
@@ -109,7 +109,7 @@ export default function Authenticated({
                             <button className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 text-3xl hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                                 <CoinIcon />
                                 <span className="text-xl font-semibold">
-                                    {profile.coin}
+                                    {formatedBalance(profile.coin)}
                                 </span>
                             </button>
                         </div>

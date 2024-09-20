@@ -3,6 +3,7 @@ import { ModalDetailHistoryClaim } from "@/Components/Modals/ModalDetailHistoryC
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, RewardClaims } from "@/types";
 import {
+    formatedBalance,
     RewardClaimStatusLabel,
     RewardClaimStatusLabelColor,
 } from "@/utils/manipulation";
@@ -132,7 +133,7 @@ export default function History({
                                 borderColor: "divider",
                             }}
                         >
-                            {data.price} Coin
+                            {formatedBalance(data.price)} Coin
                         </CardOverflow>
                     </Card>
                 ))}

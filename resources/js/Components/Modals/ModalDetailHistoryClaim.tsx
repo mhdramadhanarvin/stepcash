@@ -5,6 +5,7 @@ import { Badge } from "../Badge";
 import CoinIcon from "../CoinIcon";
 import SecondaryButton from "../SecondaryButton";
 import {
+    formatedBalance,
     limitCharacter,
     RewardClaimIntruction,
     RewardClaimStatusLabel,
@@ -100,7 +101,7 @@ export const ModalDetailHistoryClaim = ({
                         </div>
                         <div className="col-span-8 text-lg inline-flex px-3">
                             <CoinIcon />
-                            {data?.price}
+                            {formatedBalance(data?.price ?? 0)}
                         </div>
                     </div>
                 </div>

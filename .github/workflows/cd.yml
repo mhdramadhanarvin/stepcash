@@ -33,7 +33,7 @@ jobs:
         run: composer install -n --prefer-dist -o
 
       - name: Decrypt large env
-        run: cp .env.gpg .env && ./decrypt_env.sh
+        run: cp .env.prod.gpg .env.gpg && ./decrypt_env.sh
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
 

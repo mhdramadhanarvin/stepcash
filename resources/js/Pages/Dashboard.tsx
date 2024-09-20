@@ -8,7 +8,7 @@ import {
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { useQuery } from "react-query";
 import { useState } from "react";
 //import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
@@ -174,7 +174,12 @@ export default function Dashboard({ auth }: PageProps) {
             <Head title="Dashboard" />
             <div>
                 <h1 className="text-xl">Welcome</h1>
-                <h2 className="text-2xl font-semibold">{auth.user.name}</h2>
+                <Link
+                    href="https://forms.gle/Rbskp4trHk2TipoD8"
+                    target="_blank"
+                >
+                    <h2 className="text-2xl font-semibold">{auth.user.name}</h2>
+                </Link>
             </div>
             <div className="w-full flex justify-center items-center text-center progress">
                 <div

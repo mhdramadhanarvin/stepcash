@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps, Rewards } from "@/types";
-import { limitCharacter } from "@/utils/manipulation";
+import { formatedBalance, limitCharacter } from "@/utils/manipulation";
 import { useApi } from "@/utils/useApi";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -87,7 +87,7 @@ export default function List({ auth }: PageProps) {
                                     px: 1,
                                     writingMode: "vertical-rl",
                                     justifyContent: "center",
-                                    fontSize: "xs",
+                                    fontSize: 10,
                                     fontWeight: "xl",
                                     letterSpacing: "1px",
                                     textTransform: "uppercase",
@@ -95,7 +95,7 @@ export default function List({ auth }: PageProps) {
                                     borderColor: "divider",
                                 }}
                             >
-                                {data.price} Coin
+                                {formatedBalance(data.price)} Coin
                             </CardOverflow>
                         </Card>
                     </Link>

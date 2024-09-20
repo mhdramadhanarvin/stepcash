@@ -54,3 +54,10 @@ export const RewardClaimIntruction = ({
             return "";
     }
 };
+
+export const formatedBalance = (balance: number): string => {
+    if (balance >= 1000) {
+        return balance / 1000 + "K";
+    }
+    return balance.toString();
+};

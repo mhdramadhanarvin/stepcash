@@ -6,8 +6,14 @@
     @font-face {
         font-family: "Poppins";
         font-style: normal;
-        font-weight: 300, 400, 500, 600, 700;
+        font-weight: 400;
         font-display: swap;
-        src: url("~fonts/Poppins.ttf");
+        src: url("~fonts/PoppinsRegular.eot");
+        src:
+            url("~fonts/PoppinsRegular.eot") format("embedded-opentype"),
+            url("~fonts/PoppinsRegular.woff2") format("woff2"),
+            url("~fonts/PoppinsRegular.woff") format("woff"),
+            url("~fonts/PoppinsRegular.ttf") format("truetype"),
+            url("~fonts/PoppinsRegular.svg#PoppinsRegular") format("svg");
     }
 }

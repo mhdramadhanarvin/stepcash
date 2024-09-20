@@ -6,3 +6,5 @@
 # --yes to assume "yes" for questions
 gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" \
 --output ./storage/app/credentials.json ./credentials.json.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" \
+--output ./.env ./.env.gpg

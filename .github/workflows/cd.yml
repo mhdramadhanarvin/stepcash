@@ -25,7 +25,7 @@ jobs:
           coverage: none
 
       - name: Decrypt large secret
-        run: cp .env.prod.gpg .env.gpg && ./decrypt_secret.sh
+        run: cp .env.prod.gpg .env.gpg && ./decrypt_secret.sh && ls -lah
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
 

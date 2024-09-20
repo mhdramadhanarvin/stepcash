@@ -68,7 +68,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /home/${{ secrets.SSH_USERNAME }}/stepcash
+            rm -rf public/build
             unzip -o app.zip -d /home/${{ secrets.SSH_USERNAME }}/stepcash/
             rm -rf app.zip
+            /opt/alt/php83/usr/bin/php artisan optimize:clear
+            /opt/alt/php83/usr/bin/php artisan filament:optimize-clear
             /opt/alt/php83/usr/bin/php artisan optimize
             /opt/alt/php83/usr/bin/php artisan filament:optimize

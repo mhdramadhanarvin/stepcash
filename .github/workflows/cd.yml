@@ -42,7 +42,8 @@ jobs:
       - name: Build App
         run: |
           npm run build && \
-          rm -rf ./.env
+          rm -rf ./.env && \
+          rm -rf ./public/.htaccess
 
       - uses: montudor/action-zip@v1
         with:

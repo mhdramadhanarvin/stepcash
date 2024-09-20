@@ -25,12 +25,17 @@ jobs:
           coverage: none
 
       - name: Decrypt large secret
-        run: cp .env.prod.gpg .env.gpg && ./decrypt_secret.sh && ls -lah
+        run: cp .env.example .env && ./decrypt_secret.sh
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
 
       - name: Run composer install
         run: composer install -n --prefer-dist -o
+
+      - name: Decrypt large env
+        run: cp .env.gpg .env && ./decrypt_env.sh
+        env:
+          LARGE_SECRET_PASSPHRASE: ${{ secrets.CRENDENTIALS_PASSPHRASE }}
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -42,7 +47,7 @@ jobs:
       - name: Build App
         run: |
           npm run build && \
-          # rm -rf ./.env && \
+          rm -rf ./.env && \
           rm -rf ./public/.htaccess
 
       - uses: montudor/action-zip@v1

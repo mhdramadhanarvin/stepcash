@@ -30,7 +30,7 @@ class DashboardController extends Controller
     public function sync()
     {
         $user = Auth::user();
-        FetchGoogleFit::dispatch($user);
+        FetchGoogleFit::dispatch($user)->onQueue('stepsCount');
         return $this->stepActivityRepository->getInToday($user->id);
     }
 }

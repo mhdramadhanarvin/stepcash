@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 class FetchGoogleFit implements ShouldQueue
 {
     use Queueable;
+    use Dispatchable;
 
     /**
      * Create a new job instance.
@@ -31,11 +32,11 @@ class FetchGoogleFit implements ShouldQueue
      */
     public function handle(GoogleApiService $googleApiService, StepActivityRepositoryInterface $stepActivityRepository): void
     {
-        DB::beginTransaction();
-        Log::info("Queue FetchGoogleFit: STARTING..");
-        try {
+        DB::transaction(function () use ($googleApiService, $stepActivityRepository) {
+            Log::info("Queue FetchGoogleFit: STARTING..");
             $data = $googleApiService->syncData($this->user);
             $step = $stepActivityRepository->getInToday($this->user->id);
+
             if (!$step) {
                 $stepActivityRepository->create($this->user, [
                     'step' => $data['steps'],
@@ -51,12 +52,8 @@ class FetchGoogleFit implements ShouldQueue
                     'time_spent' => $data['time_spent'],
                 ], $step->id);
             }
-            DB::commit();
             Log::debug(json_encode($data));
             Log::info("Queue FetchGoogleFit: DONE..");
-        } catch (\Throwable $e) {
-            Log::error("Queue FetchGoogleFit: " . $e->getMessage());
-            DB::rollBack();
-        }
+        }, 5);
     }
 }

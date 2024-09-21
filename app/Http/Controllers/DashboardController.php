@@ -11,8 +11,6 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    protected $target = 10000;
-
     protected $stepActivityRepository;
     protected $googleApiService;
 

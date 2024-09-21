@@ -142,7 +142,8 @@ export default function Dashboard({ auth }: PageProps) {
 
     const step: Tracker = data ?? 0;
 
-    const calculate = Math.round((step.step ?? 0 / 7000) * 100);
+    const calculate =
+        step?.step > 0 ? Math.round((step?.step / 7000) * 100) : 0;
     const progress = calculate >= 100 ? 100 : calculate;
 
     const refetchData = () => {

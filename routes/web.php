@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ConsoleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -39,5 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/notifications/setReadAll', [NotificationController::class, 'setReadAll'])->name('notifications.setReadAll');
     Route::resource('notifications', NotificationController::class);
 });
+
+Route::get('/run-command/{name_of_command}', [ConsoleController::class, 'index']);
 
 require __DIR__.'/auth.php';

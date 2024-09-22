@@ -44,6 +44,7 @@ export default function Authenticated({
     const unReadNotif = notificationsGet.length;
 
     // START ONBOARD
+    //const [onBoard, setOnBoard] = useState<boolean>(true);
     const [onBoard, setOnBoard] = useLocalStorageState<boolean>("onBoard", {
         defaultValue: true,
     });
@@ -72,7 +73,7 @@ export default function Authenticated({
                 target: ".progress span",
             },
             {
-                title: <h1 className="font-semibold">Total Koin</h1>,
+                title: <span className="font-semibold">Total Koin</span>,
                 content:
                     "Jumlah langkah harianmu akan dikonversikan ke koin dan ditampilkan disini",
                 placement: "top",
@@ -139,6 +140,43 @@ export default function Authenticated({
                     },
                 },
                 target: ".totalCalory",
+            },
+            {
+                title: <span className="font-semibold">Halaman Hadiah</span>,
+                content:
+                    "Tukarkan koin yang kamu dapatkan dengan produk pada halaman ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".rewards",
+            },
+            {
+                title: (
+                    <span className="font-semibold">Halaman Notifikasi</span>
+                ),
+                content:
+                    "Perkembangan terkait penukaran hadiah kamu akan diinformasikan disini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".notifications",
+            },
+            {
+                title: <span className="font-semibold">Halaman Profil</span>,
+                content: "Kamu juga bisa mengubah profil kamu pada halaman ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".profile",
             },
         ],
     });
@@ -303,11 +341,13 @@ export default function Authenticated({
                         path={route("dashboard")}
                         icon={faHome}
                         active={route().current("dashboard")}
+                        className="dashboard"
                     />
                     <NavIcon
                         path={route("rewards.index")}
                         icon={faAward}
                         active={route().current("rewards.*")}
+                        className="rewards"
                     />
                     <div className="">
                         <NavIcon
@@ -315,12 +355,14 @@ export default function Authenticated({
                             icon={faBell}
                             active={route().current("notifications.*")}
                             notif={unReadNotif}
+                            className="notifications"
                         />
                     </div>
                     <NavIcon
                         path={route("profile.edit")}
                         icon={faUserCircle}
                         active={route().current("profile.edit")}
+                        className="profile"
                     />
                 </div>
             </footer>

@@ -9,24 +9,40 @@ interface NavIconProps {
     active: boolean;
     icon: IconProp;
     notif?: number;
+    className?: string;
 }
 
-export default function NavIcon({ path, active, icon, notif }: NavIconProps) {
+export default function NavIcon({
+    path,
+    active,
+    icon,
+    notif,
+    className,
+}: NavIconProps) {
     useEffect(() => {}, [active]);
 
     return (
         <Link href={path}>
-            {active ? (
-                <div className="bg-white w-10 h-10 rounded-full grid justify-items-center items-center">
+            <div className={`p-0 m-0 ${className}`}>
+                {active ? (
+                    <div className="bg-white w-10 h-10 rounded-full grid justify-items-center items-center">
+                        <Badge
+                            badgeContent={notif}
+                            color="error"
+                            showZero={false}
+                        >
+                            <FontAwesomeIcon
+                                icon={icon}
+                                className="text-commons"
+                            />
+                        </Badge>
+                    </div>
+                ) : (
                     <Badge badgeContent={notif} color="error" showZero={false}>
-                        <FontAwesomeIcon icon={icon} className="text-commons" />
+                        <FontAwesomeIcon icon={icon} />
                     </Badge>
-                </div>
-            ) : (
-                <Badge badgeContent={notif} color="error" showZero={false}>
-                    <FontAwesomeIcon icon={icon} />
-                </Badge>
-            )}
+                )}
+            </div>
         </Link>
     );
 }

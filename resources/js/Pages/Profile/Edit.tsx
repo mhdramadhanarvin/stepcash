@@ -1,6 +1,4 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import DeleteUserForm from "./Partials/DeleteUserForm";
-import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 import { Head, Link } from "@inertiajs/react";
 import { PageProps } from "@/types";
@@ -36,19 +34,9 @@ export default function Edit({
                             </p>
                         </header>
                         <Link href={route("logout")} method="post" as="button">
-                            <DangerButton> LOGOUT </DangerButton>
+                            <DangerButton>LOGOUT</DangerButton>
                         </Link>
                     </div>
-
-                    {/*
-                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
-
-                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
-                        */}
                 </div>
             </div>
         </AuthenticatedLayout>

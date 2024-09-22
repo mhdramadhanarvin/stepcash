@@ -2,7 +2,7 @@ import { useState, PropsWithChildren, ReactNode } from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { User } from "@/types";
 import {
     faAward,
@@ -86,7 +86,7 @@ export default function Authenticated({
             },
             {
                 title: (
-                    <span className="font-semibold">Sinkrinisasi Manual</span>
+                    <span className="font-semibold">Sinkronisasi Manual</span>
                 ),
                 content: "Klik ini untuk sinkronisasi manual data langkah",
                 placement: "top",
@@ -182,13 +182,14 @@ export default function Authenticated({
     });
 
     const handleJoyrideCallback = (data: CallBackProps) => {
-        const { status, type } = data;
+        const { status } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
         if (finishedStatuses.includes(status)) {
             setOnBoard(false);
         }
     };
+
     // END ONBOARD
     return (
         <div className="min-h-screen bg-gray-100">
@@ -196,7 +197,6 @@ export default function Authenticated({
                 callback={handleJoyrideCallback}
                 continuous
                 run={onBoard}
-                scrollToFirstStep
                 showProgress
                 showSkipButton
                 steps={stepsOnBoard}

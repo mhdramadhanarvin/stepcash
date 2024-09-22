@@ -14,6 +14,13 @@ import NavIcon from "@/Components/NavIcon";
 import CoinIcon from "@/Components/CoinIcon";
 import { useApi } from "@/utils/useApi";
 import { formatedBalance } from "@/utils/manipulation";
+import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
+import useLocalStorageState from "use-local-storage-state";
+
+interface State {
+    run: boolean;
+    steps: Step[];
+}
 
 export default function Authenticated({
     user,
@@ -36,8 +43,169 @@ export default function Authenticated({
     const notificationsGet: Notification[] = notifData ?? [];
     const unReadNotif = notificationsGet.length;
 
+    // START ONBOARD
+    //const [onBoard, setOnBoard] = useState<boolean>(true);
+    const [onBoard, setOnBoard] = useLocalStorageState<boolean>("onBoard", {
+        defaultValue: true,
+    });
+    const [{ steps: stepsOnBoard }] = useState<State>({
+        run: true,
+        steps: [
+            {
+                content: <span>Selamat Datang di StepCash!</span>,
+                placement: "center",
+                target: "body",
+                styles: {
+                    options: {
+                        width: 200,
+                    },
+                },
+            },
+            {
+                title: <span className="font-semibold">Progress Harian</span>,
+                content: "Progress pencapaian target langkah harian",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".progress span",
+            },
+            {
+                title: <span className="font-semibold">Total Koin</span>,
+                content:
+                    "Jumlah langkah harianmu akan dikonversikan ke koin dan ditampilkan disini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".totalCoin button",
+            },
+            {
+                title: (
+                    <span className="font-semibold">Sinkrinisasi Manual</span>
+                ),
+                content: "Klik ini untuk sinkronisasi manual data langkah",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".progress div",
+            },
+            {
+                title: <span className="font-semibold">Total Langkah</span>,
+                content: "Jumlah langkah yang kamu lakukan hari ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".totalStep",
+            },
+            {
+                title: <span className="font-semibold">Waktu</span>,
+                content: "Waktu yang dihabiskan berjalan kaki hari ini",
+                placement: "right",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".timeSpent",
+            },
+            {
+                title: <span className="font-semibold">Jarak Tempuh</span>,
+                content: "Jumlah jarak tempuh selama berjalan kaki hari ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".totalDistance",
+            },
+            {
+                title: <span className="font-semibold">Jumlah Kalori</span>,
+                content: "Jumlah kalori yang dibakar selama aktivitas hari ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".totalCalory",
+            },
+            {
+                title: <span className="font-semibold">Halaman Hadiah</span>,
+                content:
+                    "Tukarkan koin yang kamu dapatkan dengan produk pada halaman ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".rewards",
+            },
+            {
+                title: (
+                    <span className="font-semibold">Halaman Notifikasi</span>
+                ),
+                content:
+                    "Perkembangan terkait penukaran hadiah kamu akan diinformasikan disini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".notifications",
+            },
+            {
+                title: <span className="font-semibold">Halaman Profil</span>,
+                content: "Kamu juga bisa mengubah profil kamu pada halaman ini",
+                placement: "top",
+                styles: {
+                    options: {
+                        width: 300,
+                    },
+                },
+                target: ".profile",
+            },
+        ],
+    });
+
+    const handleJoyrideCallback = (data: CallBackProps) => {
+        const { status, type } = data;
+        const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+
+        if (finishedStatuses.includes(status)) {
+            setOnBoard(false);
+        }
+    };
+    // END ONBOARD
     return (
         <div className="min-h-screen bg-gray-100">
+            <Joyride
+                callback={handleJoyrideCallback}
+                continuous
+                run={onBoard}
+                scrollToFirstStep
+                showProgress
+                showSkipButton
+                steps={stepsOnBoard}
+                styles={{
+                    options: {
+                        zIndex: 10000,
+                    },
+                }}
+            />
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -105,7 +273,7 @@ export default function Authenticated({
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center sm:hidden totalCoin">
                             <button className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 text-3xl hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                                 <CoinIcon />
                                 <span className="text-xl font-semibold">
@@ -173,11 +341,13 @@ export default function Authenticated({
                         path={route("dashboard")}
                         icon={faHome}
                         active={route().current("dashboard")}
+                        className="dashboard"
                     />
                     <NavIcon
                         path={route("rewards.index")}
                         icon={faAward}
                         active={route().current("rewards.*")}
+                        className="rewards"
                     />
                     <div className="">
                         <NavIcon
@@ -185,12 +355,14 @@ export default function Authenticated({
                             icon={faBell}
                             active={route().current("notifications.*")}
                             notif={unReadNotif}
+                            className="notifications"
                         />
                     </div>
                     <NavIcon
                         path={route("profile.edit")}
                         icon={faUserCircle}
                         active={route().current("profile.edit")}
+                        className="profile"
                     />
                 </div>
             </footer>

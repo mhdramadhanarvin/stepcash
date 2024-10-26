@@ -8,7 +8,7 @@ import {
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
-import { Head, Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { useQuery } from "react-query";
 import { useState } from "react";
 

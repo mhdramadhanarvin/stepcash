@@ -4,22 +4,14 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Repositories\StepActivityRepositoryInterface;
-use App\Repositories\TokenRepositoryInterface;
 use App\Services\GoogleApiService;
-use Illuminate\Cache\Repository;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class FetchGoogleFit implements ShouldQueue, ShouldBeUnique
+class FetchGoogleFit implements ShouldQueue
 {
     use Queueable;
     use Dispatchable;
@@ -31,27 +23,13 @@ class FetchGoogleFit implements ShouldQueue, ShouldBeUnique
     ) {
     }
 
-    public function uniqueId(): string
-    {
-        return $this->user->id;
-    }
-
-    public function uniqueVia(): Repository
-    {
-        return Cache::driver('redis');
-    }
-
-    public function middleware(): array
-    {
-        return [(new WithoutOverlapping($this->user->id))->releaseAfter(60)];
-    }
-
     public function handle(GoogleApiService $googleApiService, StepActivityRepositoryInterface $stepActivityRepository): void
     {
-        DB::transaction(function () use ($googleApiService, $stepActivityRepository) {
-            Log::info("Queue FetchGoogleFit: STARTING..");
-            $data = $googleApiService->syncData($this->user);
-            $step = $stepActivityRepository->getInToday($this->user->id);
+        Log::info("Queue FetchGoogleFit: STARTING..");
+        $data = $googleApiService->syncData($this->user);
+        $step = $stepActivityRepository->getInToday($this->user->id);
+
+        DB::transaction(function () use ($stepActivityRepository, $step, $data) {
 
             if (!$step) {
                 $stepActivityRepository->create($this->user, [

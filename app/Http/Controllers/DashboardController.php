@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Jobs\FetchGoogleFit;
 use App\Repositories\StepActivityRepositoryInterface;
 use App\Services\GoogleApiService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -30,7 +30,8 @@ class DashboardController extends Controller
     public function sync()
     {
         $user = Auth::user();
-        FetchGoogleFit::dispatch($user)->onQueue('stepsCount');
+        FetchGoogleFit::dispatch($user);
+        Log::info("Running queue...");
         return $this->stepActivityRepository->getInToday($user->id);
     }
 }

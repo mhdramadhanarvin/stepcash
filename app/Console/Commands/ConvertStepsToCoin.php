@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\NotificationEnum;
+use App\Notifications\UserNotification;
 use Illuminate\Console\Command;
 use App\Services\GoogleApiService;
 use Illuminate\Support\Facades\DB;
@@ -81,10 +82,25 @@ class ConvertStepsToCoin extends Command
                     "is_convert" => true
                 ], $step->id);
                 $this->coinRateRepository->update(['coin_balance' => $coinRate->coin_balance - $coinGet], 1);
-                $this->notificationRepository->create($user, [
-                    'title' => NotificationEnum::COIN_CONVERT,
-                    'message' => 'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'
-                ]);
+                $user->notify(new UserNotification(
+                    NotificationEnum::COIN_CONVERT,
+                    'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'
+                ));
+                /*$user->notify([*/
+                /*    'data' => [*/
+                /*        'title' => NotificationEnum::COIN_CONVERT,*/
+                /*        'message' => 'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'*/
+                /*    ]*/
+                /*]);*/
+                /*Notification::make()*/
+                /*    ->success()*/
+                /*    ->title('Perubahan Akun Mitra')*/
+                /*    ->body('Akun mitra telah berhasil diverifikasi admin')*/
+                /*    ->sendToDatabase($record->user);*/
+                /*$this->notificationRepository->create($user, [*/
+                /*    'title' => NotificationEnum::COIN_CONVERT,*/
+                /*    'message' => 'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'*/
+                /*]);*/
             }
 
             $this->info('Successfully.');

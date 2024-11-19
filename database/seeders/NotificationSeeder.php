@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use App\Enums\NotificationEnum;
+use App\Enums\RewardClaimEnum;
 use App\Models\Reward;
 use App\Models\RewardClaim;
 use App\Models\StepActivity;
 use App\Models\User;
 use App\Notifications\ExchangeRewardProcess;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class NotificationSeeder extends Seeder
@@ -18,8 +18,15 @@ class NotificationSeeder extends Seeder
      */
     public function run(): void
     {
+        User::find(3)->update([
+            'coin' => 100000
+        ]);
         StepActivity::factory()->count(10)->for(User::find(3))->create();
-        RewardClaim::factory()->count(10)->for(User::find(3))->for(Reward::find(1))->create();
+        RewardClaim::factory()->count(5)->for(User::find(3))->for(Reward::find(1))->create();
+        RewardClaim::factory()->count(5)->for(User::find(3))->for(Reward::find(1))->create([
+            "status" => RewardClaimEnum::WAITING_CONFIRMATION,
+            "created_at" => now()->subDay(2)
+        ]);
         for ($i = 0 ; $i < 5;$i++) {
             User::find(3)->notify(
                 new ExchangeRewardProcess(

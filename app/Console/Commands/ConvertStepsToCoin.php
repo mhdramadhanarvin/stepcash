@@ -86,21 +86,6 @@ class ConvertStepsToCoin extends Command
                     NotificationEnum::COIN_CONVERT,
                     'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'
                 ));
-                /*$user->notify([*/
-                /*    'data' => [*/
-                /*        'title' => NotificationEnum::COIN_CONVERT,*/
-                /*        'message' => 'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'*/
-                /*    ]*/
-                /*]);*/
-                /*Notification::make()*/
-                /*    ->success()*/
-                /*    ->title('Perubahan Akun Mitra')*/
-                /*    ->body('Akun mitra telah berhasil diverifikasi admin')*/
-                /*    ->sendToDatabase($record->user);*/
-                /*$this->notificationRepository->create($user, [*/
-                /*    'title' => NotificationEnum::COIN_CONVERT,*/
-                /*    'message' => 'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'*/
-                /*]);*/
             }
 
             $this->info('Successfully.');

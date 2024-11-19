@@ -52,6 +52,8 @@ class RewardClaimRepository implements RewardClaimRepositoryInterface
 
     public function update(array $data, $id)
     {
+        $stepActivity = $this->getById($id);
+        return $stepActivity->update($data);
     }
 
     public function delete($id)

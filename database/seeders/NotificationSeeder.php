@@ -27,6 +27,9 @@ class NotificationSeeder extends Seeder
             "status" => RewardClaimEnum::WAITING_CONFIRMATION,
             "created_at" => now()->subDay(2)
         ]);
+        RewardClaim::factory()->count(5)->for(User::find(3))->for(Reward::find(1))->create([
+            "status" => RewardClaimEnum::READY_TO_PICKUP,
+        ]);
         for ($i = 0 ; $i < 5;$i++) {
             User::find(3)->notify(
                 new ExchangeRewardProcess(

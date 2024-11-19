@@ -33,21 +33,23 @@ export const ModalDetailHistoryClaim = ({
                         Detail Penukaran
                     </h2>
                 </div>
-                <div>
-                    <h3 className="text-lg font-bold text-gray-900">
-                        Kode Penukaran
-                    </h3>
-                    <span className="block mt-3 px-1">
-                        <Typography
-                            variant="solid"
-                            color="primary"
-                            paddingX={2}
-                            sx={{ maxWidth: 130 }}
-                        >
-                            #{data?.code}
-                        </Typography>
-                    </span>
-                </div>
+                {data?.status == "ready_to_pickup" && (
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-900">
+                            Kode Penukaran
+                        </h3>
+                        <span className="block mt-3 px-1">
+                            <Typography
+                                variant="solid"
+                                color="primary"
+                                paddingX={2}
+                                sx={{ maxWidth: 130 }}
+                            >
+                                #{data?.code}
+                            </Typography>
+                        </span>
+                    </div>
+                )}
                 <div className="grid grid-cols-7 pt-2">
                     <div className="col-span-4">
                         <h3 className="text-lg font-bold text-gray-900">
@@ -76,7 +78,13 @@ export const ModalDetailHistoryClaim = ({
                             <span className="block mt-3">
                                 {new Date(
                                     data?.created_at ?? "",
-                                ).toLocaleString("id-ID")}
+                                ).toLocaleString("id-ID", {
+                                    day: "numeric",
+                                    month: "numeric",
+                                    year: "numeric",
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                })}
                             </span>
                         </p>
                     </div>

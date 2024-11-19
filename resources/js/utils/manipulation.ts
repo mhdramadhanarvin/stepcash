@@ -57,7 +57,13 @@ export const RewardClaimIntruction = ({
 
 export const formatedBalance = (balance: number): string => {
     if (balance >= 1000) {
-        return balance / 1000 + "K";
+        return (
+            new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 })
+                .format(balance / 1000)
+                .toString() + "K"
+        );
     }
-    return balance.toString();
+    return new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 })
+        .format(balance)
+        .toString();
 };

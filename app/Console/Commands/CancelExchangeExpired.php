@@ -62,7 +62,10 @@ class CancelExchangeExpired extends Command
                 ['status', '=', RewardClaimEnum::WAITING_CONFIRMATION]
             ]);
             foreach ($rewardClaim->getAll() as $claim) {
-                $this->rewardClaimRepository->update(['status' => RewardClaimEnum::REJECTED], $claim['id']);
+                $this->rewardClaimRepository->update([
+                    'status' => RewardClaimEnum::REJECTED,
+                    'reason_rejection' => 'kadaluarsa'
+                ], $claim['id']);
                 $user = $this->userRepository->getById($claim['user_id']);
                 $this->userRepository->addCoin($user, $claim['price']);
                 $user->notify(new UserNotification(

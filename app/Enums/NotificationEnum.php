@@ -10,11 +10,12 @@ enum NotificationEnum: string
     case EXCHANGE_CANCELED = "Penukaran Dibatalkan";
     case EXCHANGE_DONE = "Penukaran Selesai";
     case COIN_CONVERT = "Konversi Langkah Harian";
+    case TARGET_NOT_ACHIEVED = "Target Belum Tercapai";
 
     public static function getValue(string $name): string
     {
         foreach (self::cases() as $enum) {
-            if($name === $enum->name) {
+            if ($name === $enum->name) {
                 return $enum->value;
             }
         }

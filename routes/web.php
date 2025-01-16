@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/notifications/setRead/{id}', [NotificationController::class, 'setRead'])->name('notifications.setRead');
     Route::post('/notifications/setReadAll', [NotificationController::class, 'setReadAll'])->name('notifications.setReadAll');
     Route::resource('notifications', NotificationController::class);
+    Route::get('/recommendation', [DashboardController::class, 'recommendation'])->name('recommendation');
 });
 
 Route::get('/run-command/{name_of_command}', [ConsoleController::class, 'index']);

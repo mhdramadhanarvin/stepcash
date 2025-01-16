@@ -126,7 +126,7 @@ export default function List({ auth }: PageProps) {
                                             data.read_at != null ? "" : primary,
                                     }}
                                 >
-                                    <div className="rounded-full bg-green-500 m-2">
+                                    <div className="rounded-full m-2 bg-green-500">
                                         <FontAwesomeIcon
                                             icon={faBell}
                                             className="text-white"
@@ -142,7 +142,10 @@ export default function List({ auth }: PageProps) {
                                             fontWeight="md"
                                             textColor="success.plainColor"
                                         >
-                                            {data.data.title}
+                                            {data.data.title}{" "}
+                                            {data.data.from_system != null
+                                                ? "SISTEM"
+                                                : ""}
                                         </Typography>
                                     </div>
                                     <Typography

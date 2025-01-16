@@ -34,4 +34,23 @@ class DashboardController extends Controller
         Log::info("Running queue...");
         return $this->stepActivityRepository->getInToday($user->id);
     }
+
+    public function recommendation()
+    {
+        return Inertia::render('Recommendation', [
+            'recommendation' => [
+                [
+                    'name' => 'Push Up 10x',
+                    'description' => 'Lakukan push up sebanyak 10x',
+                    'thumbnail' => asset('images/push-up.gif')
+                ],
+                [
+                    'name' => 'Plank Selama 15 detik',
+                    'description' => 'Lakukan plank selama 15 detik',
+                    'thumbnail' => asset('images/plank.gif')
+                ]
+            ]
+        ]);
+    }
+
 }

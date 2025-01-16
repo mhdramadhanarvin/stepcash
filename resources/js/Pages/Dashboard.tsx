@@ -9,14 +9,10 @@ import {
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
-import { Head, Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { useQuery } from "react-query";
 import { useState } from "react";
 import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
-import TextInput from "@/Components/TextInput";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
 import { EditTargetStepForm } from "./Profile/Partials/EditTargetStep";
 
 const theme = createTheme({

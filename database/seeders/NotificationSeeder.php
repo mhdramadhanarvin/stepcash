@@ -78,5 +78,14 @@ class NotificationSeeder extends Seeder
                 )
             );
         }
+        for ($i = 0 ; $i < 5;$i++) {
+            User::find(3)->notify(
+                new ExchangeRewardProcess(
+                    NotificationEnum::getValue('TARGET_NOT_ACHIEVED'),
+                    'Target langkah hari ini belum tercapai, ikuti rekomendasi kami untuk kebugaran kamu (dari sistem)',
+                    route('recommendation')
+                )
+            );
+        }
     }
 }

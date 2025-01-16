@@ -76,6 +76,7 @@ export interface Notification {
     data: {
         title: string;
         body: string;
+        from_system?: boolean;
         actions?: [
             {
                 url?: string;
@@ -84,4 +85,10 @@ export interface Notification {
     };
     read_at: Date;
     created_at: Date;
+}
+
+export interface RecommendationType {
+    name: string;
+    description: string;
+    thumbnail: string;
 }

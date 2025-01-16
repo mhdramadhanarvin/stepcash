@@ -63,7 +63,7 @@ class SendRecommendation extends Command
 
                 // convert data to coin
                 $this->info('Send Recommendation : Collect steps...');
-                $achieveTarget = $step->step > $user->step_target;
+                $achieveTarget = $step->step < $user->step_target;
 
                 if ($achieveTarget) {
                     $user->notify(new UserNotification(

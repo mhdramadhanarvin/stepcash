@@ -2,7 +2,7 @@ import { useState, PropsWithChildren, ReactNode } from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link, router } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { User } from "@/types";
 import {
     faAward,
@@ -14,13 +14,13 @@ import NavIcon from "@/Components/NavIcon";
 import CoinIcon from "@/Components/CoinIcon";
 import { useApi } from "@/utils/useApi";
 import { formatedBalance } from "@/utils/manipulation";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
-import useLocalStorageState from "use-local-storage-state";
+//import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
+//import useLocalStorageState from "use-local-storage-state";
 
-interface State {
-    run: boolean;
-    steps: Step[];
-}
+//interface State {
+//    run: boolean;
+//    steps: Step[];
+//}
 
 export default function Authenticated({
     user,
@@ -45,154 +45,155 @@ export default function Authenticated({
 
     // START ONBOARD
     //const [onBoard, setOnBoard] = useState<boolean>(true);
-    const [onBoard, setOnBoard] = useLocalStorageState<boolean>("onBoard", {
-        defaultValue: true,
-    });
-    const [{ steps: stepsOnBoard }] = useState<State>({
-        run: true,
-        steps: [
-            {
-                content: <span>Selamat Datang di StepCash!</span>,
-                placement: "center",
-                target: "body",
-                styles: {
-                    options: {
-                        width: 200,
-                    },
-                },
-            },
-            {
-                title: <span className="font-semibold">Progress Harian</span>,
-                content: "Progress pencapaian target langkah harian",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".progress span",
-            },
-            {
-                title: <span className="font-semibold">Total Koin</span>,
-                content:
-                    "Jumlah langkah harianmu akan dikonversikan ke koin dan ditampilkan disini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".totalCoin button",
-            },
-            {
-                title: (
-                    <span className="font-semibold">Sinkronisasi Manual</span>
-                ),
-                content: "Klik ini untuk sinkronisasi manual data langkah",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".progress div",
-            },
-            {
-                title: <span className="font-semibold">Total Langkah</span>,
-                content: "Jumlah langkah yang kamu lakukan hari ini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".totalStep",
-            },
-            {
-                title: <span className="font-semibold">Waktu</span>,
-                content: "Waktu yang dihabiskan berjalan kaki hari ini",
-                placement: "right",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".timeSpent",
-            },
-            {
-                title: <span className="font-semibold">Jarak Tempuh</span>,
-                content: "Jumlah jarak tempuh selama berjalan kaki hari ini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".totalDistance",
-            },
-            {
-                title: <span className="font-semibold">Jumlah Kalori</span>,
-                content: "Jumlah kalori yang dibakar selama aktivitas hari ini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".totalCalory",
-            },
-            {
-                title: <span className="font-semibold">Halaman Hadiah</span>,
-                content:
-                    "Tukarkan koin yang kamu dapatkan dengan produk pada halaman ini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".rewards",
-            },
-            {
-                title: (
-                    <span className="font-semibold">Halaman Notifikasi</span>
-                ),
-                content:
-                    "Perkembangan terkait penukaran hadiah kamu akan diinformasikan disini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".notifications",
-            },
-            {
-                title: <span className="font-semibold">Halaman Profil</span>,
-                content: "Kamu juga bisa mengubah profil kamu pada halaman ini",
-                placement: "top",
-                styles: {
-                    options: {
-                        width: 300,
-                    },
-                },
-                target: ".profile",
-            },
-        ],
-    });
+    //const [onBoard, setOnBoard] = useLocalStorageState<boolean>("onBoard", {
+    //    defaultValue: true,
+    //});
+    //const [{ steps: stepsOnBoard }] = useState<State>({
+    //    run: true,
+    //    steps: [
+    //        {
+    //            content: <span>Selamat Datang di StepCash!</span>,
+    //            placement: "center",
+    //            target: "body",
+    //            styles: {
+    //                options: {
+    //                    width: 200,
+    //                },
+    //            },
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Progress Harian</span>,
+    //            content: "Progress pencapaian target langkah harian",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".progress span",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Total Koin</span>,
+    //            content:
+    //                "Jumlah langkah harianmu akan dikonversikan ke koin dan ditampilkan disini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".totalCoin button",
+    //        },
+    //        {
+    //            title: (
+    //                <span className="font-semibold">Sinkronisasi Manual</span>
+    //            ),
+    //            content: "Klik ini untuk sinkronisasi manual data langkah",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".progress div",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Total Langkah</span>,
+    //            content: "Jumlah langkah yang kamu lakukan hari ini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".totalStep",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Waktu</span>,
+    //            content: "Waktu yang dihabiskan berjalan kaki hari ini",
+    //            placement: "right",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".timeSpent",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Jarak Tempuh</span>,
+    //            content: "Jumlah jarak tempuh selama berjalan kaki hari ini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".totalDistance",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Jumlah Kalori</span>,
+    //            content: "Jumlah kalori yang dibakar selama aktivitas hari ini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".totalCalory",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Halaman Hadiah</span>,
+    //            content:
+    //                "Tukarkan koin yang kamu dapatkan dengan produk pada halaman ini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".rewards",
+    //        },
+    //        {
+    //            title: (
+    //                <span className="font-semibold">Halaman Notifikasi</span>
+    //            ),
+    //            content:
+    //                "Perkembangan terkait penukaran hadiah kamu akan diinformasikan disini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".notifications",
+    //        },
+    //        {
+    //            title: <span className="font-semibold">Halaman Profil</span>,
+    //            content: "Kamu juga bisa mengubah profil kamu pada halaman ini",
+    //            placement: "top",
+    //            styles: {
+    //                options: {
+    //                    width: 300,
+    //                },
+    //            },
+    //            target: ".profile",
+    //        },
+    //    ],
+    //});
 
-    const handleJoyrideCallback = (data: CallBackProps) => {
-        const { status } = data;
-        const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
-
-        if (finishedStatuses.includes(status)) {
-            setOnBoard(false);
-        }
-    };
+    //const handleJoyrideCallback = (data: CallBackProps) => {
+    //    const { status } = data;
+    //    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+    //
+    //    if (finishedStatuses.includes(status)) {
+    //        setOnBoard(false);
+    //    }
+    //};
 
     // END ONBOARD
     return (
         <div className="min-h-screen bg-gray-100">
+            {/*
             <Joyride
                 callback={handleJoyrideCallback}
                 continuous
@@ -206,6 +207,7 @@ export default function Authenticated({
                     },
                 }}
             />
+            */}
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">

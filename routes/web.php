@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/getData', [ProfileController::class, 'getData'])->name('profile.get');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/step', [ProfileController::class, 'updateStep'])->name('profile.step.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/notifications/getData', [NotificationController::class, 'getData'])->name('notifications.get');
     Route::get('/notifications/getDataUnread', [NotificationController::class, 'getDataUnread'])->name('notifications.getUnread');

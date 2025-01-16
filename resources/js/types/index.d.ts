@@ -4,6 +4,7 @@ export interface User {
     email: string;
     email_verified_at: string;
     coin: number;
+    step_target: number;
 }
 
 export type PageProps<

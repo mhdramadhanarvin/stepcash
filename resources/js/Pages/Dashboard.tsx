@@ -5,12 +5,19 @@ import {
     faClock,
     faFire,
     faLocationDot,
+    faPencil,
     faWalking,
 } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { useQuery } from "react-query";
 import { useState } from "react";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { EditTargetStepForm } from "./Profile/Partials/EditTargetStep";
 
 const theme = createTheme({
     palette: {
@@ -22,6 +29,7 @@ const theme = createTheme({
 
 export default function Dashboard({ auth }: PageProps) {
     const [loading, setLoading] = useState<boolean>(false);
+    const [edit, setEdit] = useState<boolean>(false);
 
     const fetchData = async () => {
         const response = await fetch(route("dashboard.sync"));
@@ -33,7 +41,9 @@ export default function Dashboard({ auth }: PageProps) {
     const step: Tracker = data ?? 0;
 
     const calculate =
-        step?.step > 0 ? Math.round((step?.step / 7000) * 100) : 0;
+        step?.step > 0
+            ? Math.round((step?.step / auth.user.step_target) * 100)
+            : 0;
     const progress = calculate >= 100 ? 100 : calculate;
 
     const refetchData = () => {
@@ -79,8 +89,18 @@ export default function Dashboard({ auth }: PageProps) {
                 {step.step ?? 0}
             </h2>
             <h2 className="text-center text-lg py-2 font-semibold targetStep">
-                Target: 7000 Langkah
+                Target: {auth.user.step_target} Langkah
             </h2>
+            <div
+                className="text-sm text-center border-2-b"
+                onClick={() => setEdit(true)}
+            >
+                <FontAwesomeIcon
+                    icon={faPencil}
+                    className="mx-2 text-blue-600"
+                />
+                Ubah Target
+            </div>
             <div className="w-full flex justify-center items-center text-center mt-5">
                 <div className="timeSpent">
                     <div className="w-12 h-12 bg-gray-200 rounded-full mx-5 grid justify-items-center content-center">
@@ -116,6 +136,14 @@ export default function Dashboard({ auth }: PageProps) {
                     </div>
                 </div>
             </div>
+            <Modal show={edit} onClose={() => setEdit(false)} closeable={true}>
+                <div className="p-5 mx-4">
+                    <h2 className="text-xl font-semibold mb-2">
+                        Ubah Target Langkah Harian
+                    </h2>
+                    <EditTargetStepForm handleClose={() => setEdit(false)} />
+                </div>
+            </Modal>
         </AuthenticatedLayout>
     );
 }

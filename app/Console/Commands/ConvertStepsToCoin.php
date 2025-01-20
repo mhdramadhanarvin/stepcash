@@ -83,7 +83,7 @@ class ConvertStepsToCoin extends Command
                 ], $step->id);
                 $this->coinRateRepository->update(['coin_balance' => $coinRate->coin_balance - $coinGet], 1);
                 $user->notify(new UserNotification(
-                    NotificationEnum::COIN_CONVERT,
+                    NotificationEnum::getValue('COIN_CONVERT'),
                     'Konversi otomatis ' . $stepCanConvert . ' langkah dengan ' .$coinGet .' koin'
                 ));
             }

@@ -7,6 +7,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as NotificationsFilament;
 
 class UserNotification extends Notification
 {
@@ -14,14 +16,16 @@ class UserNotification extends Notification
 
     protected $title;
     protected $message;
+    protected $url;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(NotificationEnum $title, string $message)
+    public function __construct(string $title, string $message, string $url = "")
     {
         $this->title = $title;
         $this->message = $message;
+        $this->url = $url;
     }
 
     /**
@@ -50,11 +54,22 @@ class UserNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
-        return [
-            'title' => $this->title,
-            'body' => $this->message
-        ];
+        if ($this->url != '') {
+            return NotificationsFilament::make()
+                ->title($this->title)
+                ->body($this->message)
+                ->actions([
+                    Action::make('lihat')
+                        ->button()
+                        ->url($this->url),
+                ])
+                ->getDatabaseMessage();
+        }
+        return NotificationsFilament::make()
+            ->title($this->title)
+            ->body($this->message)
+            ->getDatabaseMessage();
     }
 }

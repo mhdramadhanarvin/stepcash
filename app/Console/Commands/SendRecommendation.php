@@ -67,7 +67,7 @@ class SendRecommendation extends Command
 
                 if ($achieveTarget) {
                     $user->notify(new UserNotification(
-                        NotificationEnum::TARGET_NOT_ACHIEVED,
+                        NotificationEnum::getValue('TARGET_NOT_ACHIEVED'),
                         'Target langkah hari ini belum tercapai, ikuti rekomendasi kami untuk kebugaran kamu (dari sistem)',
                         route('recommendation')
                     ));

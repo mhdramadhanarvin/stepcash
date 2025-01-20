@@ -59,7 +59,7 @@ class SendRecommendation extends Command
             $stepsInToday = $this->stepActivityRepository->getAllTodayNotConvert();
 
             foreach ($stepsInToday as $step) {
-                $user = $this->userRepository->getById($step->user);
+                $user = $this->userRepository->getById($step->user->id);
 
                 // convert data to coin
                 $this->info('Send Recommendation : Collect steps...');

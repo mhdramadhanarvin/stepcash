@@ -18,7 +18,7 @@ class RewardClaimsChart extends ChartWidget
     {
         $data = StepActivity::selectRaw('DATE(created_at) AS day, SUM(step) AS total_steps, SUM(step) / 1000 AS total_coins')
         ->groupBy(DB::raw('DATE(created_at)'))
-        ->orderByDesc('day')
+        ->orderBy('day')
         ->limit(30)
         ->get();
         $days = $data->pluck('day')->toArray();

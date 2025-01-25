@@ -6,7 +6,6 @@ use App\Filament\Pages\Registration;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationGroup;
 use Filament\Support\Colors\Color;
 use Filament\Pages;
 use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
